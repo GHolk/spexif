@@ -12,9 +12,7 @@
     newCacheImage: function(evt) {
       var dataURL, image;
       dataURL = evt.target.result;
-      image = new CacheImage(dataURL);
-      image.createHTMLTag();
-      return document.body.appendChild(image.HTMLTag);
+      return image = new CacheImage(dataURL);
     }
   };
 

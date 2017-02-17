@@ -1,7 +1,11 @@
 
-img {
+#image-container div {
+    float: left;
+    padding: 1ex;
+}
+
+#image-container img {
     height: 250px;
-    margin: 10px;
 }
 
 form {
@@ -10,6 +14,6 @@ form {
     left: 1ex;
 
     padding: 1ex;
-    
+
     background-color: white;
 }

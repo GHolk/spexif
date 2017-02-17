@@ -8,8 +8,6 @@ webFile =
     newCacheImage: (evt) ->
         dataURL = evt.target.result
         image = new CacheImage dataURL
-        image.createHTMLTag()
-        document.body.appendChild image.HTMLTag
 
 
 whenInputFiles = (evt) ->

@@ -1,15 +1,88 @@
+class ImageList extends Array
+    constructor: ->
+        @container = document.getElementById 'image-container'
 
-window.imageList = []
+    add: (image) ->
+        @push image
+        @show image
+
+    show: (image) ->
+        @container.appendChild image.HTMLNode
+
+imageList = new ImageList()
+
 
 class CacheImage
     constructor: (dataURL) ->
         @dataURL = dataURL
-        window.imageList.push @createHTMLTag()
+        @createEXIF()
+        @createImageNode()
+        @createHTMLNode()
+        imageList.add this
 
-    createHTMLTag: ->
-        imageTag = document.createElement 'img'
-        imageTag.src = @dataURL
-        @HTMLTag = imageTag
+    createImageNode: ->
+        imageNode = document.createElement 'img'
+        imageNode.src = @dataURL
+        @imageNode = imageNode
+
+    createHTMLNode: ->
+        HTMLNode = document.createElement 'div'
+        HTMLNode.appendChild @imageNode
+        HTMLNode.appendChild @exif.HTMLNode
+        @HTMLNode = HTMLNode
+
+    createEXIF: ->
+        halfExif = piexif.load @dataURL
+        @exif = new FilterPiexif halfExif
+
+
+class FilterPiexif
+    constructor: (exif) ->
+        try
+            @date = @getDate(exif.Exif)
+        catch err
+            console.error "can't get date of photo. "
+            console.error err
+
+        try
+            @maker = @getMaker(exif['0th'])
+        catch err
+            console.error "can't get camera of photo. "
+            console.error err
+
+        try
+            @gps = [
+                @getGPS(exif.GPS, "GPSLongitude")
+                @getGPS(exif.GPS, "GPSLatitude")
+            ]
+        catch err
+            console.error "can't get gps data of photo. "
+            console.error err
+
+        @createHTMLNode()
+
+    getMaker: (exif) -> 
+        exif[piexif.ImageIFD.Make].trim()
+
+    getDate: (exif) ->
+        date = exif[ piexif.ExifIFD.DateTimeOriginal ].split ' '
+        date[0] = date[0].replace /:/g, '-'
+        date.join 'T'
+
+    getGPS: (exif, key) ->
+        dms = exif[ piexif.GPSIFD[key] ]
+        ratio = 1
+        decimal = 0
+        for part in dms
+            decimal += part[0] / part[1] / ratio
+            ratio *= 60
+        return decimal
+
+    createHTMLNode: ->
+        HTMLNode = document.createElement 'pre' 
+        HTMLNode.textContent = [@date, @maker, @gps].join '\n'
+        @HTMLNode = HTMLNode
+
 
 window.CacheImage = CacheImage
-
+window.imageList = imageList
