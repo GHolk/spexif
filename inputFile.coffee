@@ -1,4 +1,3 @@
-window.imageList = []
 
 webFile =
     read: (file, callback) ->
@@ -11,17 +10,6 @@ webFile =
         image = new CacheImage dataURL
         image.createHTMLTag()
         document.body.appendChild image.HTMLTag
-
-
-class CacheImage
-    constructor: (dataURL) ->
-        @dataURL = dataURL
-        window.imageList.push @createHTMLTag()
-
-    createHTMLTag: ->
-        imageTag = document.createElement 'img'
-        imageTag.src = @dataURL
-        @HTMLTag = imageTag
 
 
 whenInputFiles = (evt) ->

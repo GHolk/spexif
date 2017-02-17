@@ -1,0 +1,15 @@
+
+img {
+    height: 250px;
+    margin: 10px;
+}
+
+form {
+    position: fixed;
+    bottom: 1ex;
+    left: 1ex;
+
+    padding: 1ex;
+    
+    background-color: white;
+}
