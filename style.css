@@ -12,8 +12,12 @@ form {
     position: fixed;
     bottom: 1ex;
     left: 1ex;
-
     padding: 1ex;
-
     background-color: white;
+    z-index: 1;
+}
+
+#google-map-container {
+    height: 40em;
+    width: 30em;
 }

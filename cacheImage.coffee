@@ -1,13 +1,16 @@
+
+myMap = window.myMap
+
 class ImageList extends Array
     constructor: ->
-        @container = document.getElementById 'image-container'
+        @map = myMap
 
     add: (image) ->
         @push image
         @show image
 
     show: (image) ->
-        @container.appendChild image.HTMLNode
+        @map.showPoint image
 
 imageList = new ImageList()
 
@@ -18,7 +21,11 @@ class CacheImage
         @createEXIF()
         @createImageNode()
         @createHTMLNode()
+        @createPoint()
         imageList.add this
+
+    createPoint: ->
+        @mapPoint = myMap.createPoint this
 
     createImageNode: ->
         imageNode = document.createElement 'img'
