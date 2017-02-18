@@ -4,7 +4,7 @@ class Speaker
         @debuger = shower.debuger
         @boardNode = shower.boardNode
     errorFreindly: (err) ->
-        @boardNode.textContent += err + '\r\n'
+        @boardNode.appendChild document.createTextNode err
         @debuger.error err
         return err
     error: (err) ->

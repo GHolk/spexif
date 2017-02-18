@@ -1,5 +1,5 @@
 
-all: inputFile.js cacheImage.js googleMapWraper.js errorSpeaker.js
+all: inputFile.js cacheImage.js googleMapWraper.js errorSpeaker.js imageList.js
 
 %.js: %.coffee
 	coffee -c $<

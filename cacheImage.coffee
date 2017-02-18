@@ -1,20 +1,7 @@
 
 myMap = spexif.myMap
 speaker = spexif.speaker
-
-class ImageList extends Array
-    constructor: ->
-        @map = myMap
-
-    add: (image) ->
-        @push image
-        @show image
-
-    show: (image) ->
-        @map.showPoint image
-
-imageList = new ImageList()
-
+imageList = spexif.imageList
 
 class CacheImage
     constructor: (dataURL) ->
@@ -25,7 +12,7 @@ class CacheImage
         @createEXIF()
         @createImageNode()
         @createHTMLNode()
-        @createPoint()
+        @createPoint() if @exif.gps
         imageList.add this
 
     createPoint: ->
@@ -97,4 +84,3 @@ class FilterPiexif
 
 
 spexif.CacheImage = CacheImage
-spexif.imageList = imageList

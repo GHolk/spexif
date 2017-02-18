@@ -17,9 +17,14 @@ form {
     height: 250px;
 }
 
+#image-container {
+    float: left;
+    border: solid 0.2em;
+}
+
 #google-map-container {
-    height: 40em;
-    width: 30em;
+    height: 20em;
+    width: 20em;
     float: left;
 }
 
@@ -32,4 +37,7 @@ form {
     float: left;
     color: red;
     font-weight: 600;
+    border: solid 0.2em;
+    margin: 1ex;
+    padding: 1ex;
 }

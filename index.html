@@ -11,9 +11,13 @@
 <input type="file" multiple />
 </form>
 
-<div id="image-container"></div>
 <div id="google-map-container"></div>
-<pre id="error-board"></pre>
+<pre id="error-board">
+<h2>info</h2>
+</pre>
+<div id="image-container">
+<h2>image no gps data</h2>
+</div>
 
 <script>
 window.spexif = {};
@@ -21,6 +25,7 @@ window.spexif = {};
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEdhfsypBCblDVnTnlLirNDWARbrfUpgc"></script>
 <script src="googleMapWraper.js"></script>
 <script src="errorSpeaker.js"></script>
+<script src="imageList.js"></script>
 <script src="cacheImage.js"></script>
 <script src="inputFile.js"></script>
 </body>
