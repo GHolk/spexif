@@ -1,13 +1,4 @@
 
-#image-container div {
-    float: left;
-    padding: 1ex;
-}
-
-#image-container img {
-    height: 250px;
-}
-
 form {
     position: fixed;
     bottom: 1ex;
@@ -17,7 +8,21 @@ form {
     z-index: 1;
 }
 
+#image-container div {
+    float: left;
+    padding: 1ex;
+}
+
+#image-container img {
+    height: 250px;
+}
+
 #google-map-container {
     height: 40em;
     width: 30em;
+}
+
+.image-info img {
+    max-height: 300px;
+    max-width: 300px;
 }

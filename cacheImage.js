@@ -4,7 +4,7 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  myMap = window.myMap;
+  myMap = spexif.myMap;
 
   ImageList = (function(superClass) {
     extend(ImageList, superClass);
@@ -52,6 +52,7 @@
     CacheImage.prototype.createHTMLNode = function() {
       var HTMLNode;
       HTMLNode = document.createElement('div');
+      HTMLNode.className = 'image-info';
       HTMLNode.appendChild(this.imageNode);
       HTMLNode.appendChild(this.exif.HTMLNode);
       return this.HTMLNode = HTMLNode;
@@ -129,8 +130,8 @@
 
   })();
 
-  window.CacheImage = CacheImage;
+  spexif.CacheImage = CacheImage;
 
-  window.imageList = imageList;
+  spexif.imageList = imageList;
 
 }).call(this);

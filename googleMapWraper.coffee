@@ -30,6 +30,6 @@ class GoogleMap
 
 myMap = new GoogleMap()
 google.maps.event.addDomListener window, 'load', myMap.initMap.bind myMap
-window.myMap = myMap
+spexif.myMap = myMap
 
 

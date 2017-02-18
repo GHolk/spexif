@@ -1,5 +1,5 @@
 
-myMap = window.myMap
+myMap = spexif.myMap
 
 class ImageList extends Array
     constructor: ->
@@ -34,6 +34,7 @@ class CacheImage
 
     createHTMLNode: ->
         HTMLNode = document.createElement 'div'
+        HTMLNode.className = 'image-info'
         HTMLNode.appendChild @imageNode
         HTMLNode.appendChild @exif.HTMLNode
         @HTMLNode = HTMLNode
@@ -91,5 +92,5 @@ class FilterPiexif
         @HTMLNode = HTMLNode
 
 
-window.CacheImage = CacheImage
-window.imageList = imageList
+spexif.CacheImage = CacheImage
+spexif.imageList = imageList

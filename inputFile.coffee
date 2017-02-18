@@ -1,4 +1,6 @@
 
+CacheImage = spexif.CacheImage
+
 webFile =
     read: (file, callback) ->
         reader = new FileReader()
