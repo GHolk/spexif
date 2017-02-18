@@ -1,5 +1,6 @@
 
 myMap = spexif.myMap
+speaker = spexif.speaker
 
 class ImageList extends Array
     constructor: ->
@@ -17,6 +18,9 @@ imageList = new ImageList()
 
 class CacheImage
     constructor: (dataURL) ->
+        if dataURL.slice(0,22) != 'data:image/jpeg;base64'
+            throw speaker.errorFreindly 'input is not jpeg file!'
+
         @dataURL = dataURL
         @createEXIF()
         @createImageNode()
@@ -49,14 +53,14 @@ class FilterPiexif
         try
             @date = @getDate(exif.Exif)
         catch err
-            console.error "can't get date of photo. "
-            console.error err
+            speaker.error err
+            speaker.errorFreindly "can't get date of photo. "
 
         try
             @maker = @getMaker(exif['0th'])
         catch err
-            console.error "can't get camera of photo. "
-            console.error err
+            speaker.error err
+            speaker.errorFreindly "can't get camera of photo. "
 
         try
             @gps = [
@@ -64,8 +68,8 @@ class FilterPiexif
                 @getGPS(exif.GPS, "GPSLatitude")
             ]
         catch err
-            console.error "can't get gps data of photo. "
-            console.error err
+            speaker.error err
+            speaker.errorFreindly "can't get gps data of photo. "
 
         @createHTMLNode()
 

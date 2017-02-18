@@ -20,9 +20,16 @@ form {
 #google-map-container {
     height: 40em;
     width: 30em;
+    float: left;
 }
 
 .image-info img {
     max-height: 300px;
     max-width: 300px;
+}
+
+#error-board {
+    float: left;
+    color: red;
+    font-weight: 600;
 }
