@@ -8,10 +8,13 @@
 
   imageList = spexif.imageList;
 
+  FilterPiexif = spexif.FilterPiexif;
+
   CacheImage = (function() {
     function CacheImage(dataURL) {
       if (dataURL.slice(0, 22) !== 'data:image/jpeg;base64') {
-        throw speaker.errorFreindly('input is not jpeg file!');
+        speaker.errorFreindly('input is not jpeg file!');
+        throw 'input is not jpeg file!';
       }
       this.dataURL = dataURL;
       this.createEXIF();
@@ -35,12 +38,7 @@
     };
 
     CacheImage.prototype.createHTMLNode = function() {
-      var HTMLNode;
-      HTMLNode = document.createElement('div');
-      HTMLNode.className = 'image-info';
-      HTMLNode.appendChild(this.imageNode);
-      HTMLNode.appendChild(this.exif.HTMLNode);
-      return this.HTMLNode = HTMLNode;
+      return this.HTMLNode = this.exif.HTMLNode;
     };
 
     CacheImage.prototype.createEXIF = function() {
@@ -50,68 +48,6 @@
     };
 
     return CacheImage;
-
-  })();
-
-  FilterPiexif = (function() {
-    function FilterPiexif(exif) {
-      var err;
-      try {
-        this.date = this.getDate(exif.Exif);
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get date of photo. ");
-      }
-      try {
-        this.maker = this.getMaker(exif['0th']);
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get camera of photo. ");
-      }
-      try {
-        this.gps = [this.getGPS(exif.GPS, "GPSLongitude"), this.getGPS(exif.GPS, "GPSLatitude")];
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get gps data of photo. ");
-      }
-      this.createHTMLNode();
-    }
-
-    FilterPiexif.prototype.getMaker = function(exif) {
-      return exif[piexif.ImageIFD.Make].trim();
-    };
-
-    FilterPiexif.prototype.getDate = function(exif) {
-      var date;
-      date = exif[piexif.ExifIFD.DateTimeOriginal].split(' ');
-      date[0] = date[0].replace(/:/g, '-');
-      return date.join('T');
-    };
-
-    FilterPiexif.prototype.getGPS = function(exif, key) {
-      var decimal, dms, i, len, part, ratio;
-      dms = exif[piexif.GPSIFD[key]];
-      ratio = 1;
-      decimal = 0;
-      for (i = 0, len = dms.length; i < len; i++) {
-        part = dms[i];
-        decimal += part[0] / part[1] / ratio;
-        ratio *= 60;
-      }
-      return decimal;
-    };
-
-    FilterPiexif.prototype.createHTMLNode = function() {
-      var HTMLNode;
-      HTMLNode = document.createElement('pre');
-      HTMLNode.textContent = [this.date, this.maker, this.gps].join('\n');
-      return this.HTMLNode = HTMLNode;
-    };
-
-    return FilterPiexif;
 
   })();
 
