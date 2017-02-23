@@ -1,4 +1,5 @@
 
+speaker = spexif.speaker
 
 class FilterPiexif
     constructor: (exif) ->

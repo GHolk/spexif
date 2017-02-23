@@ -33,6 +33,14 @@ form {
     max-width: 300px;
 }
 
+.image-info {
+    max-width: 200px;
+}
+
+.image-info pre {
+    white-space: pre-wrap;
+}
+
 #error-board {
     float: left;
     color: red;

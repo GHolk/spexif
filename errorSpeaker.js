@@ -9,7 +9,7 @@
     }
 
     Speaker.prototype.errorFreindly = function(err) {
-      this.boardNode.appendChild(document.createTextNode(err));
+      this.boardNode.appendChild(document.createTextNode(err + '\n'));
       this.debuger.error(err);
       return err;
     };
