@@ -39,6 +39,11 @@ form {
 
 .image-info pre {
     white-space: pre-wrap;
+    display: none;
+}
+
+.image-info:hover pre {
+    display: block;
 }
 
 #error-board {
@@ -49,3 +54,4 @@ form {
     margin: 1ex;
     padding: 1ex;
 }
+

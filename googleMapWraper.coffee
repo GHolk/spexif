@@ -21,7 +21,7 @@ class GoogleMap
             lat: image.exif.gps[1]
 
         new google.maps.InfoWindow {
-            content: image.HTMLNode
+            content: image.toHTMLNode()
             position: latLng
         }
 

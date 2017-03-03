@@ -17,7 +17,7 @@ class ImageList extends Array
         @map.showPoint image
 
     showAside: (image) ->
-        @asideNode.appendChild image.HTMLNode
+        @asideNode.appendChild image.toHTMLNode()
 
 spexif.imageList = new ImageList()
 

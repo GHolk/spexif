@@ -28,7 +28,7 @@
     };
 
     ImageList.prototype.showAside = function(image) {
-      return this.asideNode.appendChild(image.HTMLNode);
+      return this.asideNode.appendChild(image.toHTMLNode());
     };
 
     return ImageList;

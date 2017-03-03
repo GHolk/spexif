@@ -26,7 +26,7 @@
         lat: image.exif.gps[1]
       };
       return new google.maps.InfoWindow({
-        content: image.HTMLNode,
+        content: image.toHTMLNode(),
         position: latLng
       });
     };
