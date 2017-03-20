@@ -1,5 +1,6 @@
 
 CacheImage = spexif.CacheImage
+imageList = spexif.imageList
 
 webFile =
     read: (file, callback) ->
@@ -8,8 +9,7 @@ webFile =
         reader.readAsDataURL file
 
     newCacheImage: (evt) ->
-        dataURL = evt.target.result
-        image = new CacheImage dataURL
+        imageList.add evt.target.result
 
 
 whenInputFiles = (evt) ->

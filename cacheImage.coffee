@@ -37,7 +37,6 @@ class CacheImage
         if @exif.thumbnail
             @thumbnailImage = createImage @exif.thumbnail
         @mapPoint = createPoint this if @exif.gps
-        imageList.add this
 
     createHTMLNode = ->
         div = document.createElement 'div'

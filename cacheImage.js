@@ -70,7 +70,6 @@
       if (this.exif.gps) {
         this.mapPoint = createPoint(this);
       }
-      imageList.add(this);
     }
 
     createHTMLNode = function() {

@@ -1,12 +1,14 @@
 
 myMap = spexif.myMap
+CacheImage = spexif.CacheImage
 
 class ImageList extends Array
     constructor: ->
         @map = myMap
         @asideNode = document.getElementById 'image-container'
 
-    add: (image) ->
+    add: (dataURL) ->
+        image = new CacheImage dataURL
         @push image
         if image.exif.gps
             @show image
