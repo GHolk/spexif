@@ -21,6 +21,7 @@ class Image64
     toString: -> @dataURL
     toHTMLNode: -> @HTMLNode || createHTMLNode.call this
 
+
 class CacheImage
 
     createEXIF = (dataURL) -> new FilterPiexif piexif.load dataURL

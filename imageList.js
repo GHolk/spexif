@@ -35,6 +35,25 @@
       return this.asideNode.appendChild(image.toHTMLNode());
     };
 
+    ImageList.prototype.addFromURL = function(url) {
+      var request;
+      throw 'this function not work';
+      request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.responseType = 'arraybuffer';
+      request.onreadystatechange = (function(_this) {
+        return function() {
+          var req, u8;
+          req = request;
+          if (req.readyState === 4 && req.status === 200) {
+            u8 = new Uint8Array(req.response);
+            return _this.add('data:image/jpeg;base64,' + btoa(String.fromCharCode.apply(_this, u8)));
+          }
+        };
+      })(this);
+      return request.send('');
+    };
+
     return ImageList;
 
   })(Array);
