@@ -13,25 +13,30 @@
   Image64 = (function() {
     var createHTMLNode;
 
-    function Image64(data) {
-      if (data.slice(0, 23) === 'data:image/jpeg;base64,') {
-        this.dataURL = data;
-      } else if (data.match(/\W/)) {
-        this.dataURL = 'data:image/jpeg;base64,' + btoa(data);
+    function Image64(url, data) {
+      if (url.slice(0, 23) === 'data:image/jpeg;base64,') {
+        this.dataType = 'dataURL';
+        this.url = url;
+        this.data = atob(url.slice(23));
+      } else if (data.slice(0, 2) === "\xff\xd8") {
+        this.dataType = 'binaryString';
+        this.url = url || 'data:image/jpeg;base64,' + btoa(data);
+        this.data = data;
       } else {
-        this.dataURL = 'data:image/jpeg;base64,' + data;
+        speaker.errorFreindly('input is not jpeg file!');
+        throw 'input is not jpeg file!' + '\n' + data;
       }
     }
 
     createHTMLNode = function() {
       var image;
       image = document.createElement('img');
-      image.src = this.dataURL;
+      image.src = this.url;
       return image;
     };
 
     Image64.prototype.toString = function() {
-      return this.dataURL;
+      return this.data;
     };
 
     Image64.prototype.toHTMLNode = function() {
@@ -45,27 +50,23 @@
   CacheImage = (function() {
     var createEXIF, createHTMLNode, createImage, createPoint;
 
-    createEXIF = function(dataURL) {
-      return new FilterPiexif(piexif.load(dataURL));
+    createEXIF = function(data) {
+      return new FilterPiexif(piexif.load(data));
     };
 
-    createImage = function(dataURL) {
-      return new Image64(dataURL);
+    createImage = function(url, data) {
+      return new Image64(url, data);
     };
 
     createPoint = function(image) {
       return myMap.createPoint(image);
     };
 
-    function CacheImage(dataURL) {
-      if (dataURL.slice(0, 23) !== 'data:image/jpeg;base64,') {
-        speaker.errorFreindly('input is not jpeg file!');
-        throw 'input is not jpeg file!' + '\n' + dataURL;
-      }
-      this.fullImage = createImage(dataURL);
-      this.exif = createEXIF(dataURL);
+    function CacheImage(url, data) {
+      this.fullImage = createImage(url, data);
+      this.exif = createEXIF(data);
       if (this.exif.thumbnail) {
-        this.thumbnailImage = createImage(this.exif.thumbnail);
+        this.thumbnailImage = createImage('', this.exif.thumbnail);
       }
       if (this.exif.gps) {
         this.mapPoint = createPoint(this);

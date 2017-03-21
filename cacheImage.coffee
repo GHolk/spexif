@@ -5,38 +5,41 @@ imageList = spexif.imageList
 FilterPiexif = spexif.FilterPiexif
 
 class Image64
-    constructor: (data) ->
-        if data.slice(0,23) == 'data:image/jpeg;base64,'
-            @dataURL = data
-        else if data.match /\W/
-            @dataURL = 'data:image/jpeg;base64,' + btoa data
+    constructor: (url, data) ->
+        if url.slice(0,23) == 'data:image/jpeg;base64,'
+            @dataType = 'dataURL'
+            @url = url
+            @data = atob url.slice 23
+
+        else if data.slice(0,2) == "\xff\xd8"
+            @dataType = 'binaryString'
+            @url = url || 'data:image/jpeg;base64,' + btoa data
+            @data = data
+
         else
-            @dataURL = 'data:image/jpeg;base64,' + data
+            speaker.errorFreindly 'input is not jpeg file!'
+            throw 'input is not jpeg file!' + '\n' + data
 
     createHTMLNode = ->
         image = document.createElement 'img'
-        image.src = @dataURL
+        image.src = @url
         return image
 
-    toString: -> @dataURL
+    toString: -> @data
     toHTMLNode: -> @HTMLNode || createHTMLNode.call this
 
 
 class CacheImage
 
-    createEXIF = (dataURL) -> new FilterPiexif piexif.load dataURL
-    createImage = (dataURL) -> new Image64 dataURL
+    createEXIF = (data) -> new FilterPiexif piexif.load data
+    createImage = (url, data) -> new Image64 url, data
     createPoint = (image) -> myMap.createPoint image
 
-    constructor: (dataURL) ->
-        if dataURL.slice(0,23) != 'data:image/jpeg;base64,'
-            speaker.errorFreindly 'input is not jpeg file!'
-            throw 'input is not jpeg file!' + '\n' + dataURL
-
-        @fullImage = createImage dataURL
-        @exif = createEXIF dataURL
+    constructor: (url, data) ->
+        @fullImage = createImage url, data
+        @exif = createEXIF data
         if @exif.thumbnail
-            @thumbnailImage = createImage @exif.thumbnail
+            @thumbnailImage = createImage '', @exif.thumbnail
         @mapPoint = createPoint this if @exif.gps
 
     createHTMLNode = ->

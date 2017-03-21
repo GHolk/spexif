@@ -9,7 +9,7 @@
   CacheImage = spexif.CacheImage;
 
   ImageList = (function(superClass) {
-    var arraybufferToBinaryString;
+    var arrayBufferToBinaryString;
 
     extend(ImageList, superClass);
 
@@ -18,26 +18,7 @@
       this.asideNode = document.getElementById('image-container');
     }
 
-    ImageList.prototype.add = function(dataURL) {
-      var image;
-      image = new CacheImage(dataURL);
-      this.push(image);
-      if (image.exif.gps) {
-        return this.show(image);
-      } else {
-        return this.showAside(image);
-      }
-    };
-
-    ImageList.prototype.show = function(image) {
-      return this.map.showPoint(image);
-    };
-
-    ImageList.prototype.showAside = function(image) {
-      return this.asideNode.appendChild(image.toHTMLNode());
-    };
-
-    arraybufferToBinaryString = function(arraybuffer) {
+    arrayBufferToBinaryString = function(arraybuffer) {
       var charCode, charCodeToChar, u8;
       u8 = new Uint8Array(arraybuffer);
       charCodeToChar = String.fromCharCode;
@@ -52,17 +33,45 @@
       })()).join('');
     };
 
+    ImageList.prototype.addFromBlob = function(blob) {
+      var reader, url, whenArrayBufferRead;
+      url = URL.createObjectURL(blob);
+      reader = new FileReader();
+      whenArrayBufferRead = (function(_this) {
+        return function() {
+          var image;
+          image = new CacheImage(url, arrayBufferToBinaryString(reader.result));
+          _this.push(image);
+          if (image.exif.gps) {
+            return _this.show(image);
+          } else {
+            return _this.showAside(image);
+          }
+        };
+      })(this);
+      reader.onload = whenArrayBufferRead;
+      return reader.readAsArrayBuffer(blob);
+    };
+
+    ImageList.prototype.show = function(image) {
+      return this.map.showPoint(image);
+    };
+
+    ImageList.prototype.showAside = function(image) {
+      return this.asideNode.appendChild(image.toHTMLNode());
+    };
+
     ImageList.prototype.addFromURL = function(url) {
       var request;
       request = new XMLHttpRequest();
       request.open('GET', url, true);
-      request.responseType = 'arraybuffer';
+      request.responseType = 'blob';
       request.onreadystatechange = (function(_this) {
         return function() {
           var req;
           req = request;
           if (req.readyState === 4 && req.status === 200) {
-            return _this.add('data:image/jpeg;base64,' + btoa(arraybufferToBinaryString(req.response)));
+            return _this.addFromBlob(req.response);
           }
         };
       })(this);
