@@ -42,15 +42,6 @@ class CacheImage
             @thumbnailImage = createImage '', @exif.thumbnail
         @mapPoint = createPoint this if @exif.gps
 
-    createHTMLNode = ->
-        div = document.createElement 'div'
-        div.className = 'image-info'
-        div.appendChild (
-            @thumbnailImage?.toHTMLNode() || @fullImage.toHTMLNode()
-        )
-        div.appendChild @exif.toHTMLNode()
-        return div
-
-    toHTMLNode: -> @HTMLNode || @HTMLNode = createHTMLNode.call this
+    toHTMLNode: -> @HTMLNode || @HTMLNode = new ImageNode this
 
 spexif.CacheImage = CacheImage
