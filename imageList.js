@@ -9,6 +9,8 @@
   CacheImage = spexif.CacheImage;
 
   ImageList = (function(superClass) {
+    var arraybufferToBinaryString;
+
     extend(ImageList, superClass);
 
     function ImageList() {
@@ -35,19 +37,32 @@
       return this.asideNode.appendChild(image.toHTMLNode());
     };
 
+    arraybufferToBinaryString = function(arraybuffer) {
+      var charCode, charCodeToChar, u8;
+      u8 = new Uint8Array(arraybuffer);
+      charCodeToChar = String.fromCharCode;
+      return ((function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = u8.length; i < len; i++) {
+          charCode = u8[i];
+          results.push(charCodeToChar(charCode));
+        }
+        return results;
+      })()).join('');
+    };
+
     ImageList.prototype.addFromURL = function(url) {
       var request;
-      throw 'this function not work';
       request = new XMLHttpRequest();
       request.open('GET', url, true);
       request.responseType = 'arraybuffer';
       request.onreadystatechange = (function(_this) {
         return function() {
-          var req, u8;
+          var req;
           req = request;
           if (req.readyState === 4 && req.status === 200) {
-            u8 = new Uint8Array(req.response);
-            return _this.add('data:image/jpeg;base64,' + btoa(String.fromCharCode.apply(_this, u8)));
+            return _this.add('data:image/jpeg;base64,' + btoa(arraybufferToBinaryString(req.response)));
           }
         };
       })(this);
