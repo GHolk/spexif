@@ -1,34 +1,31 @@
 
-domHelper = {}
+imageManager = spexif.imageManager
 
-class ImageNode =
-    template: do ->
-        node = document
-            .getElementById 'template'
-            .getElementsByClassName('image-template')[0]
-            .cloneNode true
-        node.remove()
-        node.className = 'image-info'
-        return node
+template = do ->
+    node = document
+        .getElementById 'template'
+        .getElementsByClassName('image-template')[0]
+        .cloneNode true
+    node.className = 'image-info'
+    return node
 
-    checkImage = ->
-        if @checked
-            imageList.selectImages.add @parentNode.cacheImage
-        else
-            imageList.selectImages.remove @parentNode.cacheImage
+createInfoNode = (cacheImage) ->
+    newNode = template.cloneNode true
+    newNode.cacheImage = cacheImage
+    newNode.getElementsByTagName('img')[0].src =
+        cacheImage.thumbnailImage.url
 
+    exif = cacheImage.exif
+    newNode.getElementsByTagName('pre')[0].textContent = """
+        #{exif.date}
+        #{exif.maker}
+        #{exif.gps}
+    """
 
-    constructor: (cacheImage) ->
-        newNode = @node.cloneNode true
-        newNode.cacheImage = cacheImage
-        newNode.getElementsByTagName('img').src = cacheImage.url
+    return newNode
 
-        exif = cacheImage.exif
-        newNode.getElementsByTagName('pre').textContent = """
-            #{exif.date}
-            #{exif.maker}
-            #{exif.gps}
-        """
-        newNode.getElementsByTagName('input').onchange = checkImage
-        return node
+getSelectedImages = ->
+    for checkbox in document.getElementsByTagName 'input' when checkbox.checked
+        checkbox.parentNode.cacheImage
 
+spexif.domHelper = {createInfoNode,getSelectedImages}

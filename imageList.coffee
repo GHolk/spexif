@@ -1,11 +1,25 @@
 
 myMap = spexif.myMap
 CacheImage = spexif.CacheImage
+getSelectedImages = spexif.domHelper.getSelectedImages
 
-class ImageList extends Array
+class ImageList
     constructor: ->
+        @list = []
+
+    add: (cacheImage) ->
+        @list.push cacheImage
+
+    remove: (cacheImage) ->
+        @list = @list.filter (image) -> image != cacheImage
+
+
+class ImageManager extends ImageList
+    constructor: ->
+        @list = []
         @map = myMap
         @asideNode = document.getElementById 'image-container'
+        @select = new ImageList()
 
     arrayBufferToBinaryString = (arraybuffer) ->
         u8 = new Uint8Array arraybuffer
@@ -21,7 +35,7 @@ class ImageList extends Array
                 url
                 arrayBufferToBinaryString reader.result
             )
-            @push image
+            @add image
             if image.exif.gps
                 @show image
             else
@@ -46,5 +60,7 @@ class ImageList extends Array
                 @addFromBlob req.response
         request.send ''
 
-spexif.imageList = new ImageList()
+    getSelectedImages: getSelectedImages
+
+spexif.imageManager = new ImageManager()
 

@@ -1,8 +1,8 @@
 
 myMap = spexif.myMap
 speaker = spexif.speaker
-imageList = spexif.imageList
 FilterPiexif = spexif.FilterPiexif
+createInfoNode = spexif.domHelper.createInfoNode
 
 class Image64
     constructor: (url, data) ->
@@ -20,17 +20,10 @@ class Image64
             speaker.errorFreindly 'input is not jpeg file!'
             throw 'input is not jpeg file!' + '\n' + data
 
-    createHTMLNode = ->
-        image = document.createElement 'img'
-        image.src = @url
-        return image
-
     toString: -> @data
-    toHTMLNode: -> @HTMLNode || createHTMLNode.call this
 
 
 class CacheImage
-
     createEXIF = (data) -> new FilterPiexif piexif.load data
     createImage = (url, data) -> new Image64 url, data
     createPoint = (image) -> myMap.createPoint image
@@ -42,6 +35,7 @@ class CacheImage
             @thumbnailImage = createImage '', @exif.thumbnail
         @mapPoint = createPoint this if @exif.gps
 
-    toHTMLNode: -> @HTMLNode || @HTMLNode = new ImageNode this
+    toHTMLNode: -> @HTMLNode || @HTMLNode = createInfoNode this
 
 spexif.CacheImage = CacheImage
+

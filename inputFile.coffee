@@ -1,11 +1,11 @@
 
 CacheImage = spexif.CacheImage
-imageList = spexif.imageList
+imageManager = spexif.imageManager
 
 whenInputFiles = (evt) ->
     window.files = evt.target.files
 
     for file in files
-        imageList.addFromBlob file
+        imageManager.addFromBlob file
 
 (document.getElementsByTagName 'input')[0].addEventListener 'change', whenInputFiles, true

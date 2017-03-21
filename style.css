@@ -28,22 +28,26 @@ form {
     float: left;
 }
 
-.image-info img {
-    max-height: 300px;
-    max-width: 300px;
+.image-info {
+    padding: 0.2em;
 }
 
-.image-info {
-    max-width: 200px;
+#image-container .image-info {
+    margin: 0.5em;
+    border: solid 1px;
+}
+
+.image-info img {
+    height: 200px;
 }
 
 .image-info pre {
     white-space: pre-wrap;
-    display: none;
 }
 
-.image-info:hover pre {
+.image-info input {
     display: block;
+    text-align: right;
 }
 
 #error-board {
