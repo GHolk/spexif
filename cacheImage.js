@@ -21,7 +21,7 @@
         this.url = url || 'data:image/jpeg;base64,' + btoa(data);
         this.data = data;
       } else {
-        speaker.errorFreindly('input is not jpeg file!');
+        speaker.errorFriendly('input is not jpeg file!');
         throw 'input is not jpeg file!' + '\n' + data;
       }
     }
@@ -50,13 +50,18 @@
     };
 
     function CacheImage(url, data) {
+      var err;
       this.fullImage = createImage(url, data);
       this.exif = createEXIF(data);
       if (this.exif.thumbnail) {
         this.thumbnailImage = createImage('', this.exif.thumbnail);
       }
-      if (this.exif.gps) {
+      try {
         this.mapPoint = createPoint(this);
+      } catch (error) {
+        err = error;
+        speaker.error(err);
+        speaker.errorFriendly("can't show gps.");
       }
     }
 

@@ -5,51 +5,81 @@
   speaker = spexif.speaker;
 
   FilterPiexif = (function() {
-    var createHTMLNode, getDate, getGPS, getMaker;
+    var createHTMLNode, get, set;
 
-    getMaker = function(exif) {
-      return exif[piexif.ImageIFD.Make].trim();
-    };
-
-    getDate = function(exif) {
-      return exif[piexif.ExifIFD.DateTimeOriginal];
-    };
-
-    getGPS = function(exif, key) {
-      var decimal, dms, i, len, part, ratio;
-      dms = exif[piexif.GPSIFD[key]];
-      ratio = 1;
-      decimal = 0;
-      for (i = 0, len = dms.length; i < len; i++) {
-        part = dms[i];
-        decimal += part[0] / part[1] / ratio;
-        ratio *= 60;
+    get = {
+      maker: function(exif) {
+        return exif['0th'][piexif.ImageIFD.Make];
+      },
+      date: function(exif) {
+        return exif.Exif[piexif.ExifIFD.DateTimeOriginal];
+      },
+      oneOfGPS: function(exif, key) {
+        var decimal, dms, ratio;
+        dms = exif.GPS[piexif.GPSIFD[key]];
+        ratio = 1;
+        decimal = 0;
+        return dms.map(function(part) {
+          return part[0] / part[1];
+        }).reduce((function(sum, hex, i) {
+          return sum + hex / (Math.pow(60, i));
+        }), 0);
+      },
+      gps: function(exif) {
+        return ['GPSLongitude', 'GPSLatitude'].map((function(_this) {
+          return function(key) {
+            return _this.oneOfGPS(exif, key);
+          };
+        })(this));
       }
-      return decimal;
+    };
+
+    set = {
+      maker: function(exif, maker) {
+        return exif['0th'][piexif.ImageIFD.Make] = maker;
+      },
+      date: function(exif, date) {
+        return exif.Exif[piexif.ExifIFD.DateTimeOriginal] = date;
+      },
+      oneOfGPS: function(exif, key, dmsText) {
+        var toFrac, toInt;
+        toInt = function(f) {
+          return Math.floor(f);
+        };
+        toFrac = function(f, i) {
+          return [toInt(f * i), i];
+        };
+        return exif.GPS[piexif.GPSIFD[key]] = (function(dmsText) {
+          var float;
+          float = Number(dmsText);
+          return [float, float * 60 % 60, float * 60 * 60 % 60].map(function(fa) {
+            return [toFrac(fa[0], 1), toFrac(fa[1], 1), toFrac(fa[2], 10000)];
+          });
+        })(dmsText);
+      },
+      gps: function(exif, dms) {
+        if (typeof dms === 'string') {
+          dms = dms.split(',');
+        }
+        return ['GPSLongitude', 'GPSLatitude'].forEach(function(key, i) {
+          return setOneOfGPS(exif, key, dmsArray[i]);
+        });
+      }
     };
 
     function FilterPiexif(allExif) {
-      var err;
-      try {
-        this.date = getDate(allExif.Exif);
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get date of photo. ");
-      }
-      try {
-        this.maker = getMaker(allExif['0th']);
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get camera of photo. ");
-      }
-      try {
-        this.gps = [getGPS(allExif.GPS, "GPSLongitude"), getGPS(allExif.GPS, "GPSLatitude")];
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFreindly("can't get gps data of photo. ");
+      var err, j, key, len, ref;
+      this.allExif = allExif;
+      ref = ['date', 'maker', 'gps'];
+      for (j = 0, len = ref.length; j < len; j++) {
+        key = ref[j];
+        try {
+          this[key] = get[key](allExif);
+        } catch (error) {
+          err = error;
+          speaker.error(err);
+          speaker.errorFriendly("can't get " + key + " of photo. ");
+        }
       }
       try {
         if (!(this.thumbnail = allExif.thumbnail)) {
@@ -58,9 +88,26 @@
       } catch (error) {
         err = error;
         speaker.error(err);
-        speaker.errorFreindly("can't get thumbnail of photo. ");
+        speaker.errorFriendly("can't get thumbnail of photo. ");
       }
     }
+
+    FilterPiexif.prototype.update = function() {
+      var err, j, key, len, ref, results;
+      ref = ['date', 'maker', 'gps'];
+      results = [];
+      for (j = 0, len = ref.length; j < len; j++) {
+        key = ref[j];
+        try {
+          results.push(set[key](this.allExif, this[key]));
+        } catch (error) {
+          err = error;
+          speaker.error(err);
+          results.push(speaker.errorFriendly("can't set " + key + " of photo. "));
+        }
+      }
+      return results;
+    };
 
     createHTMLNode = function() {
       var preNode;

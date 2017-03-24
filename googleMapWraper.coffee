@@ -1,7 +1,7 @@
 
 class GoogleMap
     initMap: ->
-        latLng = 
+        latLng =
             lat: 23.652186
             lng: 120.978075
 
@@ -16,7 +16,7 @@ class GoogleMap
         )
 
     createPoint: (image) ->
-        latLng = 
+        latLng =
             lng: image.exif.gps[0]
             lat: image.exif.gps[1]
 

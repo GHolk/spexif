@@ -3,7 +3,7 @@ class Speaker
     constructor: (shower) ->
         @debuger = shower.debuger
         @boardNode = shower.boardNode
-    errorFreindly: (err) ->
+    errorFriendly: (err) ->
         @boardNode.appendChild document.createTextNode err + '\n'
         @debuger.error err
         return err

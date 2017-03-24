@@ -8,7 +8,7 @@
       this.boardNode = shower.boardNode;
     }
 
-    Speaker.prototype.errorFreindly = function(err) {
+    Speaker.prototype.errorFriendly = function(err) {
       this.boardNode.appendChild(document.createTextNode(err + '\n'));
       this.debuger.error(err);
       return err;

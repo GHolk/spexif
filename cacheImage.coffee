@@ -17,7 +17,7 @@ class Image64
             @data = data
 
         else
-            speaker.errorFreindly 'input is not jpeg file!'
+            speaker.errorFriendly 'input is not jpeg file!'
             throw 'input is not jpeg file!' + '\n' + data
 
     toString: -> @data
@@ -33,7 +33,11 @@ class CacheImage
         @exif = createEXIF data
         if @exif.thumbnail
             @thumbnailImage = createImage '', @exif.thumbnail
-        @mapPoint = createPoint this if @exif.gps
+        try
+            @mapPoint = createPoint this
+        catch err
+            speaker.error err
+            speaker.errorFriendly "can't show gps."
 
     toHTMLNode: -> @HTMLNode || @HTMLNode = createInfoNode this
 
