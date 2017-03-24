@@ -9,6 +9,14 @@ template = do ->
     node.className = 'image-info'
     return node
 
+whenTextAreaChange = ->
+    [date,maker,gps] = @value.split /\n/g
+    gps = gps.split ','
+    exif = @parentNode.cacheImage.exif
+    for key,value of {date,maker}
+        exif.key = value
+    exif.gps = gps.map Number
+
 createInfoNode = (cacheImage) ->
     newNode = template.cloneNode true
     newNode.cacheImage = cacheImage
@@ -16,11 +24,14 @@ createInfoNode = (cacheImage) ->
         cacheImage.thumbnailImage.url
 
     exif = cacheImage.exif
-    newNode.getElementsByTagName('pre')[0].textContent = """
+    textarea = newNode.getElementsByTagName('textarea')[0]
+    textarea.value = """
         #{exif.date}
         #{exif.maker}
         #{exif.gps}
     """
+
+    textarea.onchange = whenTextAreaChange
 
     return newNode
 

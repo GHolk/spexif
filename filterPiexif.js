@@ -9,7 +9,7 @@
 
     get = {
       maker: function(exif) {
-        return exif['0th'][piexif.ImageIFD.Make];
+        return exif['0th'][piexif.ImageIFD.Make].trim();
       },
       date: function(exif) {
         return exif.Exif[piexif.ExifIFD.DateTimeOriginal];

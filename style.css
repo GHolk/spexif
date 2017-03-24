@@ -8,7 +8,7 @@ form {
     z-index: 1;
 }
 
-#image-container div {
+#image-container .image-info {
     float: left;
     padding: 1ex;
 }
@@ -38,11 +38,15 @@ form {
 }
 
 .image-info img {
-    height: 6em;
+    width: 10em;
 }
 
-.image-info pre {
+.image-info textarea {
+    display: block;
     white-space: pre-wrap;
+    width: 10em;
+    height: 5em;
+    word-break: break-all;
 }
 
 .image-info input {

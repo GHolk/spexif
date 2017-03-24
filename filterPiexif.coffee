@@ -3,7 +3,7 @@ speaker = spexif.speaker
 
 class FilterPiexif
     get =
-        maker: (exif) -> exif['0th'][piexif.ImageIFD.Make]
+        maker: (exif) -> exif['0th'][piexif.ImageIFD.Make].trim()
         date: (exif) -> exif.Exif[ piexif.ExifIFD.DateTimeOriginal ]
         oneOfGPS: (exif, key) ->
             dms = exif.GPS[ piexif.GPSIFD[key] ]
