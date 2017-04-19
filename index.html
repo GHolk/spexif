@@ -3,12 +3,14 @@
 <meta charset="UTF-8">
 <head>
 <link rel="stylesheet" type="text/css" href="ext/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
 <script src="ext/piexif.js"></script>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 <title>spexif</title>
 </head>
 <body>
 
-<div id="google-map-container"></div>
+<div id="leaflet-map-container"></div>
 <pre id="error-board">
 <h2>info</h2>
 </pre>
@@ -30,8 +32,7 @@
 </div>
 
 <script> window.spexif = {} </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEdhfsypBCblDVnTnlLirNDWARbrfUpgc"></script>
-<script src="ext/googleMapWraper.js"></script>
+<script src="ext/leafletMapWraper.js"></script>
 <script src="ext/errorSpeaker.js"></script>
 <script src="ext/filterPiexif.js"></script>
 <script src="ext/domHelper.js"></script>

@@ -22,7 +22,7 @@ form {
     border: solid 0.2em;
 }
 
-#google-map-container {
+#leaflet-map-container {
     height: 30em;
     width: 30em;
     float: left;

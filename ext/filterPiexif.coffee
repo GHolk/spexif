@@ -35,7 +35,7 @@ class FilterPiexif
         gps: (exif, dms) ->
             dms = dms.split ',' if typeof dms == 'string'
             ['GPSLongitude','GPSLatitude'].forEach (key, i) ->
-                setOneOfGPS exif, key, dmsArray[i]
+                set.oneOfGPS exif, key, dms[i]
 
     gps: []
     constructor: (allExif) ->

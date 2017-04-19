@@ -62,7 +62,7 @@
           dms = dms.split(',');
         }
         return ['GPSLongitude', 'GPSLatitude'].forEach(function(key, i) {
-          return setOneOfGPS(exif, key, dmsArray[i]);
+          return set.oneOfGPS(exif, key, dms[i]);
         });
       }
     };
