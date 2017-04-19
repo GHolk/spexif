@@ -66,11 +66,12 @@ class ImageManager extends ImageList
         request.open 'GET', url, true
         request.responseType = 'blob'
         request.onreadystatechange = =>
-            req = request
-            if req.readyState == 4 && req.status == 200
-                @addFromBlob req.response
+            if request.readyState == 4 && request.status == 200
+                @addFromBlob request.response
         request.send ''
 
+    getChangedImages: ->
+        @list.filter (cacheImage) -> cacheImage.change
     getSelectedImages: ->
         @list.filter (cacheImage) ->
             cacheImage.toHTMLNode().getElementsByTagName('input')[0].checked

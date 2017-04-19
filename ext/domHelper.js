@@ -23,12 +23,15 @@
   };
 
   createInfoNode = function(cacheImage) {
-    var exif, newNode, textarea;
+    var exif, newNode, textarea, trim;
     newNode = template.cloneNode(true);
     newNode.getElementsByTagName('img')[0].src = cacheImage.thumbnailImage.url;
     exif = cacheImage.exif;
+    trim = function(s) {
+      return String(s).trim();
+    };
     textarea = newNode.getElementsByTagName('textarea')[0];
-    textarea.value = (exif.date.trim()) + "\n" + (exif.maker.trim()) + "\n" + (exif.gps.toString().trim());
+    textarea.value = (trim(exif.date)) + "\n" + (trim(exif.maker)) + "\n" + (trim(exif.gps));
     textarea.addEventListener('change', function() {
       updateExif(cacheImage, this.value);
       return this.parentNode.getElementsByTagName('input')[0].checked = true;

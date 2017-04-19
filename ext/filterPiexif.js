@@ -12,7 +12,7 @@
         return exif['0th'][piexif.ImageIFD.Make].trim();
       },
       date: function(exif) {
-        return exif.Exif[piexif.ExifIFD.DateTimeOriginal];
+        return exif.Exif[piexif.ExifIFD.DateTimeOriginal].trim();
       },
       oneOfGPS: function(exif, key) {
         var decimal, dms, ratio;
@@ -67,7 +67,11 @@
       }
     };
 
-    FilterPiexif.prototype.gps = [];
+    FilterPiexif.prototype.gps = [117, 23];
+
+    FilterPiexif.prototype.maker = 'iPhone 1';
+
+    FilterPiexif.prototype.date = '1910:10:10 23:59:59';
 
     function FilterPiexif(allExif) {
       var err, j, key, len, ref;

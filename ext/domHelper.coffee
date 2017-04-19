@@ -22,11 +22,12 @@ createInfoNode = (cacheImage) ->
         cacheImage.thumbnailImage.url
 
     exif = cacheImage.exif
+    trim = (s) -> String(s).trim()
     textarea = newNode.getElementsByTagName('textarea')[0]
     textarea.value = """
-        #{exif.date.trim()}
-        #{exif.maker.trim()}
-        #{exif.gps.toString().trim()}
+        #{trim exif.date}
+        #{trim exif.maker}
+        #{trim exif.gps}
     """
     textarea.addEventListener 'change', ->
         updateExif cacheImage, @value

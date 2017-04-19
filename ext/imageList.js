@@ -105,14 +105,18 @@
       request.responseType = 'blob';
       request.onreadystatechange = (function(_this) {
         return function() {
-          var req;
-          req = request;
-          if (req.readyState === 4 && req.status === 200) {
-            return _this.addFromBlob(req.response);
+          if (request.readyState === 4 && request.status === 200) {
+            return _this.addFromBlob(request.response);
           }
         };
       })(this);
       return request.send('');
+    };
+
+    ImageManager.prototype.getChangedImages = function() {
+      return this.list.filter(function(cacheImage) {
+        return cacheImage.change;
+      });
     };
 
     ImageManager.prototype.getSelectedImages = function() {

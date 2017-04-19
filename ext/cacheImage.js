@@ -35,14 +35,10 @@
   })();
 
   CacheImage = (function() {
-    var createEXIF, createImage, createPoint;
+    var createEXIF, createPoint;
 
     createEXIF = function(data) {
       return new FilterPiexif(piexif.load(data));
-    };
-
-    createImage = function(url, data) {
-      return new Image64(url, data);
     };
 
     createPoint = function(image) {
@@ -54,13 +50,21 @@
     };
 
     function CacheImage(url, data) {
-      this.fullImage = createImage(url, data);
+      this.updateImage(url, data);
       this.exif = createEXIF(data);
       if (this.exif.thumbnail) {
-        this.thumbnailImage = createImage('', this.exif.thumbnail);
+        this.thumbnailImage = new Image64('', this.exif.thumbnail);
+      } else {
+        this.thumbnailImage = this.fullImage;
       }
       this.updatePoint();
     }
+
+    CacheImage.prototype.updateImage = function(url, data) {
+      return this.fullImage = new Image64(url, data);
+    };
+
+    CacheImage.prototype.change = null;
 
     CacheImage.prototype.updatePoint = function() {
       return this.mapPoint = createPoint(this);

@@ -4,7 +4,7 @@ speaker = spexif.speaker
 class FilterPiexif
     get =
         maker: (exif) -> exif['0th'][piexif.ImageIFD.Make].trim()
-        date: (exif) -> exif.Exif[ piexif.ExifIFD.DateTimeOriginal ]
+        date: (exif) -> exif.Exif[piexif.ExifIFD.DateTimeOriginal].trim()
         oneOfGPS: (exif, key) ->
             dms = exif.GPS[ piexif.GPSIFD[key] ]
             ratio = 1
@@ -37,7 +37,9 @@ class FilterPiexif
             ['GPSLongitude','GPSLatitude'].forEach (key, i) ->
                 set.oneOfGPS exif, key, dms[i]
 
-    gps: []
+    gps: [119,23]
+    maker: 'iPhone 1'
+    date: '1910:10:10 23:59:59'
     constructor: (allExif) ->
         @allExif = allExif
         for key in ['date', 'maker', 'gps']
