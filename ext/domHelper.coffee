@@ -28,7 +28,9 @@ createInfoNode = (cacheImage) ->
         #{exif.maker.trim()}
         #{exif.gps.toString().trim()}
     """
-    textarea.addEventListener 'change', -> updateExif cacheImage, @value
+    textarea.addEventListener 'change', ->
+        updateExif cacheImage, @value
+        @parentNode.getElementsByTagName('input')[0].checked = true
 
     return newNode
 

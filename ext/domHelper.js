@@ -30,7 +30,8 @@
     textarea = newNode.getElementsByTagName('textarea')[0];
     textarea.value = (exif.date.trim()) + "\n" + (exif.maker.trim()) + "\n" + (exif.gps.toString().trim());
     textarea.addEventListener('change', function() {
-      return updateExif(cacheImage, this.value);
+      updateExif(cacheImage, this.value);
+      return this.parentNode.getElementsByTagName('input')[0].checked = true;
     });
     return newNode;
   };
