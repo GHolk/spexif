@@ -35,6 +35,11 @@
       return image.mapPoint.open(this.googleMap);
     };
 
+    GoogleMap.prototype.removePoint = function(image) {
+      var ref;
+      return (ref = image.mapPoint) != null ? ref.close() : void 0;
+    };
+
     return GoogleMap;
 
   })();

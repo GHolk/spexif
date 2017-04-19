@@ -8,10 +8,6 @@
 </head>
 <body>
 
-<form>
-<input type="file" multiple />
-</form>
-
 <div id="google-map-container"></div>
 <pre id="error-board">
 <h2>info</h2>
@@ -19,6 +15,11 @@
 <div id="image-container">
 <h2>image no gps data</h2>
 </div>
+
+<form action="query-image.html" method="get">
+<input type="file" multiple />
+<button id="update-exif">update image exif!</button>
+</form>
 
 <div id="template">
     <label class="image-template">

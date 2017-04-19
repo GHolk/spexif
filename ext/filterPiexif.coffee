@@ -37,6 +37,7 @@ class FilterPiexif
             ['GPSLongitude','GPSLatitude'].forEach (key, i) ->
                 setOneOfGPS exif, key, dmsArray[i]
 
+    gps: []
     constructor: (allExif) ->
         @allExif = allExif
         for key in ['date', 'maker', 'gps']

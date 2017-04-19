@@ -65,11 +65,7 @@
           var image;
           image = new CacheImage(url, arrayBufferToBinaryString(reader.result));
           _this.add(image);
-          if (image.exif.gps) {
-            return _this.show(image);
-          } else {
-            return _this.showAside(image);
-          }
+          return _this.show(image);
         };
       })(this);
       reader.onload = whenArrayBufferRead;
@@ -77,11 +73,29 @@
     };
 
     ImageManager.prototype.show = function(image) {
+      if (image.mapPoint) {
+        return this.showInMap(image);
+      } else {
+        return this.showAside(image);
+      }
+    };
+
+    ImageManager.prototype.showInMap = function(image) {
       return this.map.showPoint(image);
     };
 
     ImageManager.prototype.showAside = function(image) {
       return this.asideNode.appendChild(image.toHTMLNode());
+    };
+
+    ImageManager.prototype.removeFromMap = function(image) {
+      return this.map.removePoint(image);
+    };
+
+    ImageManager.prototype.updatePoint = function(image) {
+      this.removeFromMap(image);
+      image.updatePoint();
+      return this.show(image);
     };
 
     ImageManager.prototype.addFromURL = function(url) {
@@ -101,7 +115,11 @@
       return request.send('');
     };
 
-    ImageManager.prototype.getSelectedImages = getSelectedImages;
+    ImageManager.prototype.getSelectedImages = function() {
+      return this.list.filter(function(cacheImage) {
+        return cacheImage.toHTMLNode().getElementsByTagName('input')[0].checked;
+      });
+    };
 
     return ImageManager;
 

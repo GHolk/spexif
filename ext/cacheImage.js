@@ -46,24 +46,25 @@
     };
 
     createPoint = function(image) {
-      return myMap.createPoint(image);
+      if (image.exif.gps.length === 2) {
+        return myMap.createPoint(image);
+      } else {
+        return null;
+      }
     };
 
     function CacheImage(url, data) {
-      var err;
       this.fullImage = createImage(url, data);
       this.exif = createEXIF(data);
       if (this.exif.thumbnail) {
         this.thumbnailImage = createImage('', this.exif.thumbnail);
       }
-      try {
-        this.mapPoint = createPoint(this);
-      } catch (error) {
-        err = error;
-        speaker.error(err);
-        speaker.errorFriendly("can't show gps.");
-      }
+      this.updatePoint();
     }
+
+    CacheImage.prototype.updatePoint = function() {
+      return this.mapPoint = createPoint(this);
+    };
 
     CacheImage.prototype.toHTMLNode = function() {
       return this.HTMLNode || (this.HTMLNode = createInfoNode(this));

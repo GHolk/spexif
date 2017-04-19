@@ -67,6 +67,8 @@
       }
     };
 
+    FilterPiexif.prototype.gps = [];
+
     function FilterPiexif(allExif) {
       var err, j, key, len, ref;
       this.allExif = allExif;

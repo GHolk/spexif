@@ -36,19 +36,30 @@ class ImageManager extends ImageList
                 arrayBufferToBinaryString reader.result
             )
             @add image
-            if image.exif.gps
-                @show image
-            else
-                @showAside image
+            @show image
 
         reader.onload = whenArrayBufferRead
         reader.readAsArrayBuffer blob
 
     show: (image) ->
+        if image.mapPoint
+            @showInMap image
+        else
+            @showAside image
+
+    showInMap: (image) ->
         @map.showPoint image
 
     showAside: (image) ->
         @asideNode.appendChild image.toHTMLNode()
+
+    removeFromMap: (image) ->
+        @map.removePoint image
+
+    updatePoint: (image) ->
+        @removeFromMap image
+        image.updatePoint()
+        @show image
 
     addFromURL: (url) ->
         request = new XMLHttpRequest()
@@ -60,7 +71,9 @@ class ImageManager extends ImageList
                 @addFromBlob req.response
         request.send ''
 
-    getSelectedImages: getSelectedImages
+    getSelectedImages: ->
+        @list.filter (cacheImage) ->
+            cacheImage.toHTMLNode().getElementsByTagName('input')[0].checked
 
 spexif.imageManager = new ImageManager()
 

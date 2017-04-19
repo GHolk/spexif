@@ -1,6 +1,4 @@
 
-imageManager = spexif.imageManager
-
 template = do ->
     node = document
         .getElementById 'template'
@@ -9,34 +7,30 @@ template = do ->
     node.className = 'image-info'
     return node
 
-whenTextAreaChange = ->
-    [date,maker,gps] = @value.split /\n/g
-    gps = gps.split ','
-    exif = @parentNode.cacheImage.exif
-    for key,value of {date,maker}
-        exif.key = value
-    exif.gps = gps.map Number
+updateExif = (image, text) ->
+    exifArray = text.split /\n/g
+    exifArray[2] = exifArray[2].split(/,/).map (s) -> Number(s)
+    exif = image.exif
+    [exif.date, exif.maker, exif.gps] = exifArray
+    image.exif.update()
+    image.change = new Date()
+    spexif.imageManager.updatePoint image
 
 createInfoNode = (cacheImage) ->
     newNode = template.cloneNode true
-    newNode.cacheImage = cacheImage
     newNode.getElementsByTagName('img')[0].src =
         cacheImage.thumbnailImage.url
 
     exif = cacheImage.exif
     textarea = newNode.getElementsByTagName('textarea')[0]
     textarea.value = """
-        #{exif.date}
-        #{exif.maker}
-        #{exif.gps}
+        #{exif.date.trim()}
+        #{exif.maker.trim()}
+        #{exif.gps.toString().trim()}
     """
-
-    textarea.onchange = whenTextAreaChange
+    textarea.addEventListener 'change', -> updateExif cacheImage, @value
 
     return newNode
 
-getSelectedImages = ->
-    for checkbox in document.getElementsByTagName 'input' when checkbox.checked
-        checkbox.parentNode.cacheImage
+spexif.domHelper = {createInfoNode}
 
-spexif.domHelper = {createInfoNode,getSelectedImages}

@@ -26,18 +26,21 @@ class Image64
 class CacheImage
     createEXIF = (data) -> new FilterPiexif piexif.load data
     createImage = (url, data) -> new Image64 url, data
-    createPoint = (image) -> myMap.createPoint image
+    createPoint = (image) ->
+        if image.exif.gps.length == 2
+            myMap.createPoint image
+        else
+            null
 
     constructor: (url, data) ->
         @fullImage = createImage url, data
         @exif = createEXIF data
         if @exif.thumbnail
             @thumbnailImage = createImage '', @exif.thumbnail
-        try
-            @mapPoint = createPoint this
-        catch err
-            speaker.error err
-            speaker.errorFriendly "can't show gps."
+        @updatePoint()
+
+    updatePoint: ->
+        @mapPoint = createPoint this
 
     toHTMLNode: -> @HTMLNode || @HTMLNode = createInfoNode this
 

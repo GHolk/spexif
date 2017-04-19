@@ -28,6 +28,9 @@ class GoogleMap
     showPoint: (image) ->
         image.mapPoint.open @googleMap
 
+    removePoint: (image) ->
+        image.mapPoint?.close()
+
 myMap = new GoogleMap()
 google.maps.event.addDomListener window, 'load', myMap.initMap.bind myMap
 spexif.myMap = myMap
