@@ -7,8 +7,8 @@
   imageManager = spexif.imageManager;
 
   whenInputFiles = function(evt) {
-    var file, i, len, results;
-    window.files = evt.target.files;
+    var file, files, i, len, results;
+    files = evt.target.files;
     results = [];
     for (i = 0, len = files.length; i < len; i++) {
       file = files[i];

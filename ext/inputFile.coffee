@@ -3,7 +3,7 @@ CacheImage = spexif.CacheImage
 imageManager = spexif.imageManager
 
 whenInputFiles = (evt) ->
-    window.files = evt.target.files
+    files = evt.target.files
 
     for file in files
         imageManager.addFromBlob file
