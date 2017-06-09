@@ -113,6 +113,10 @@
       return results;
     };
 
+    FilterPiexif.prototype.getBinaryString = function() {
+      return piexif.dump(this.allExif);
+    };
+
     createHTMLNode = function() {
       var preNode;
       preNode = document.createElement('pre');

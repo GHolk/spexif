@@ -9,3 +9,5 @@ whenInputFiles = (evt) ->
         imageManager.addFromBlob file
 
 (document.getElementsByTagName 'input')[0].addEventListener 'change', whenInputFiles, true
+
+

@@ -63,6 +63,8 @@ class FilterPiexif
                 speaker.error err
                 speaker.errorFriendly "can't set #{key} of photo. "
 
+    getBinaryString: -> piexif.dump @allExif
+
     createHTMLNode = ->
         preNode = document.createElement 'pre'
         preNode.textContent = [@date, @maker, @gps].join '\n'
