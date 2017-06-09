@@ -52,9 +52,7 @@
         return exif.GPS[piexif.GPSIFD[key]] = (function(dmsText) {
           var float;
           float = Number(dmsText);
-          return [float, float * 60 % 60, float * 60 * 60 % 60].map(function(fa) {
-            return [toFrac(fa[0], 1), toFrac(fa[1], 1), toFrac(fa[2], 10000)];
-          });
+          return [toFrac(float, 1), toFrac(float * 60 % 60, 1), toFrac(float * 60 * 60 % 60, 10000)];
         })(dmsText);
       },
       gps: function(exif, dms) {
@@ -67,7 +65,7 @@
       }
     };
 
-    FilterPiexif.prototype.gps = [117, 23];
+    FilterPiexif.prototype.gps = [119, 23];
 
     FilterPiexif.prototype.maker = 'iPhone 1';
 
@@ -131,5 +129,14 @@
   })();
 
   spexif.FilterPiexif = FilterPiexif;
+
+  window.updateImageToNode = function(cacheImage) {
+    var img, newExifByte, newJpegByte;
+    newExifByte = piexif.dump(cacheImage.exif.allExif);
+    newJpegByte = piexif.insert(newExifByte, cacheImage.fullImage.data);
+    img = document.createElement('img');
+    img.src = 'data:image/jpeg;base64,' + btoa(newJpegByte);
+    return img;
+  };
 
 }).call(this);

@@ -27,10 +27,10 @@ class FilterPiexif
             toFrac = (f, i) -> [(toInt f*i), i]
             exif.GPS[ piexif.GPSIFD[key] ] = do (dmsText) ->
                 float = Number dmsText
-                [float, float*60%60, float*60*60%60].map (fa) -> [
-                    toFrac fa[0], 1
-                    toFrac fa[1], 1
-                    toFrac fa[2], 10000
+                return [
+                    toFrac float, 1
+                    toFrac float*60%60, 1
+                    toFrac float*60*60%60, 10000
                 ]
         gps: (exif, dms) ->
             dms = dms.split ',' if typeof dms == 'string'
@@ -72,4 +72,9 @@ class FilterPiexif
 
 spexif.FilterPiexif = FilterPiexif
 
-
+window.updateImageToNode = (cacheImage) ->
+    newExifByte = piexif.dump cacheImage.exif.allExif
+    newJpegByte = piexif.insert newExifByte, cacheImage.fullImage.data
+    img = document.createElement 'img'
+    img.src = 'data:image/jpeg;base64,' + btoa newJpegByte
+    return img
