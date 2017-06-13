@@ -2,7 +2,8 @@
 # leaflet map use [latitude, longitude] format, odd.
 
 class LeafletMap
-    reverseLntLat = (lngLat) -> [lngLat[1], lngLat[0]]
+    reverseLngLat = (lngLat) -> [lngLat[1], lngLat[0]]
+    reverseLatLng = (latLng) -> [latLng[1], latLng[0]]
     constructor: ->
         map = L.map 'leaflet-map-container', {
             closePopupOnClick: false
@@ -22,10 +23,20 @@ class LeafletMap
 
     createPoint: (image) ->
         # leaflet use [lat,lng], so reverse the array.
-        marker = L.marker reverseLntLat image.exif.gps
+        marker = L.marker (reverseLngLat image.exif.gps), {
+            draggable: true
+            riseOnHover: true
+        }
         marker.bindPopup image.toHTMLNode(), {
             autoClose: false
         }
+        marker.on 'dragend', (distance) ->
+            latLng = this.getLatLng()
+            image.exif.gps = [latLng.lng, latLng.lat]
+            image.exif.update()
+            this.setPopupContent image.toHTMLNode()
+            this.openPopup()
+
         return marker
 
     showPoint: (image) ->
@@ -34,7 +45,7 @@ class LeafletMap
             .openPopup()
 
     movePoint: (image, lngLatArray) ->
-        image.mapPoint.setLatLng reverseLntLat lngLatArray
+        image.mapPoint.setLatLng reverseLngLat lngLatArray
 
     removePoint: (image) ->
         image.mapPoint.remove() if image.mapPoint

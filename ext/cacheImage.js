@@ -90,7 +90,7 @@
     };
 
     CacheImage.prototype.toHTMLNode = function() {
-      return this.HTMLNode || (this.HTMLNode = createInfoNode(this));
+      return createInfoNode(this);
     };
 
     return CacheImage;

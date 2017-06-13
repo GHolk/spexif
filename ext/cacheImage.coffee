@@ -57,7 +57,7 @@ class CacheImage
 
     change: null  # date object at change time if change.
     updatePoint: -> @mapPoint = createPoint this
-    toHTMLNode: -> @HTMLNode || @HTMLNode = createInfoNode this
+    toHTMLNode: -> createInfoNode this
 
 spexif.CacheImage = CacheImage
 

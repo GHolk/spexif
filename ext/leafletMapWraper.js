@@ -3,10 +3,14 @@
   var LeafletMap, myMap;
 
   LeafletMap = (function() {
-    var reverseLntLat;
+    var reverseLatLng, reverseLngLat;
 
-    reverseLntLat = function(lngLat) {
+    reverseLngLat = function(lngLat) {
       return [lngLat[1], lngLat[0]];
+    };
+
+    reverseLatLng = function(latLng) {
+      return [latLng[1], latLng[0]];
     };
 
     function LeafletMap() {
@@ -24,9 +28,20 @@
 
     LeafletMap.prototype.createPoint = function(image) {
       var marker;
-      marker = L.marker(reverseLntLat(image.exif.gps));
+      marker = L.marker(reverseLngLat(image.exif.gps), {
+        draggable: true,
+        riseOnHover: true
+      });
       marker.bindPopup(image.toHTMLNode(), {
         autoClose: false
+      });
+      marker.on('dragend', function(distance) {
+        var latLng;
+        latLng = this.getLatLng();
+        image.exif.gps = [latLng.lng, latLng.lat];
+        image.exif.update();
+        this.setPopupContent(image.toHTMLNode());
+        return this.openPopup();
       });
       return marker;
     };
@@ -36,7 +51,7 @@
     };
 
     LeafletMap.prototype.movePoint = function(image, lngLatArray) {
-      return image.mapPoint.setLatLng(reverseLntLat(lngLatArray));
+      return image.mapPoint.setLatLng(reverseLngLat(lngLatArray));
     };
 
     LeafletMap.prototype.removePoint = function(image) {
