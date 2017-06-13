@@ -4,14 +4,12 @@ speaker = spexif.speaker
 FilterPiexif = spexif.FilterPiexif
 createInfoNode = spexif.domHelper.createInfoNode
 
-binaryStringToBlob = (binaryString) ->
+binaryStringToImage64 = (binaryString) ->
     u8 = new Uint8Array binaryString.length
     for x,i in u8
         u8[i] = binaryString.charCodeAt i
-    return blob = new Blob [u8], {type: 'image/jpeg'}
-
-blobToImage64 = (blob) ->
-    new Image64 (URL.createObjectURL blob), binaryString
+    blob = new Blob [u8], {type: 'image/jpeg'}
+    return new Image64 (URL.createObjectURL blob), binaryString
 
 class Image64
     constructor: (url, data) ->
@@ -52,12 +50,17 @@ class CacheImage
             @exif.getBinaryString()
             piexif.remove @fullImage.data
         )
-        @fullImage = blobToImage64 binaryStringToBlob newImageString
+        @fullImage = binaryStringToImage64 newImageString
         @HTMLNode.getElementsByTagName('a')[0].href = @fullImage.url
 
     change: null  # date object at change time if change.
     updatePoint: -> @mapPoint = createPoint this
-    toHTMLNode: -> createInfoNode this
+    toHTMLNode: ->
+        newNode = createInfoNode this
+        if @HTMLNode
+            isChecked = @HTMLNode.getElementsByTagName('input')[0].checked
+            newNode.getElementsByTagName('input')[0].checked = isChecked
+        @HTMLNode = newNode
 
 spexif.CacheImage = CacheImage
 

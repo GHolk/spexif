@@ -72,9 +72,24 @@ class ImageManager extends ImageList
 
     getChangedImages: ->
         @list.filter (cacheImage) -> cacheImage.change
+
     getSelectedImages: ->
         @list.filter (cacheImage) ->
-            cacheImage.toHTMLNode().getElementsByTagName('input')[0].checked
+            cacheImage.HTMLNode.getElementsByTagName('input')[0].checked
+
+    writeImages: (imageArray = @getSelectedImages()) ->
+        imageArray.forEach (image) ->
+            image.updateImage()
+        @selectImages imageArray
+
+    selectImages: (imageArray = @list) ->
+        imageArray.forEach (image) ->
+            image.HTMLNode.getElementsByTagName('input')[0].checked = true
+
+    invertSelect: (imageArray = @list) ->
+        imageArray.forEach (image) ->
+            checkNode = image.HTMLNode.getElementsByTagName('input')[0]
+            checkNode.checked = !checkNode.checked
 
 spexif.imageManager = new ImageManager()
 

@@ -36,5 +36,12 @@ createInfoNode = (cacheImage) ->
 
     return newNode
 
+document.getElementById 'update-image-binary'
+    .onclick = -> spexif.imageManager.writeImages()
+document.getElementById 'select-all-image'
+    .onclick = -> spexif.imageManager.selectImages()
+document.getElementById 'invert-select-image'
+    .onclick = -> spexif.imageManager.invertSelect()
+
 spexif.domHelper = {createInfoNode}
 

@@ -40,6 +40,18 @@
     return newNode;
   };
 
+  document.getElementById('update-image-binary').onclick = function() {
+    return spexif.imageManager.writeImages();
+  };
+
+  document.getElementById('select-all-image').onclick = function() {
+    return spexif.imageManager.selectImages();
+  };
+
+  document.getElementById('invert-select-image').onclick = function() {
+    return spexif.imageManager.invertSelect();
+  };
+
   spexif.domHelper = {
     createInfoNode: createInfoNode
   };

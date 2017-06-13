@@ -121,7 +121,37 @@
 
     ImageManager.prototype.getSelectedImages = function() {
       return this.list.filter(function(cacheImage) {
-        return cacheImage.toHTMLNode().getElementsByTagName('input')[0].checked;
+        return cacheImage.HTMLNode.getElementsByTagName('input')[0].checked;
+      });
+    };
+
+    ImageManager.prototype.writeImages = function(imageArray) {
+      if (imageArray == null) {
+        imageArray = this.getSelectedImages();
+      }
+      imageArray.forEach(function(image) {
+        return image.updateImage();
+      });
+      return this.selectImages(imageArray);
+    };
+
+    ImageManager.prototype.selectImages = function(imageArray) {
+      if (imageArray == null) {
+        imageArray = this.list;
+      }
+      return imageArray.forEach(function(image) {
+        return image.HTMLNode.getElementsByTagName('input')[0].checked = true;
+      });
+    };
+
+    ImageManager.prototype.invertSelect = function(imageArray) {
+      if (imageArray == null) {
+        imageArray = this.list;
+      }
+      return imageArray.forEach(function(image) {
+        var checkNode;
+        checkNode = image.HTMLNode.getElementsByTagName('input')[0];
+        return checkNode.checked = !checkNode.checked;
       });
     };
 
