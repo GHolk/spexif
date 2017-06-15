@@ -43,6 +43,7 @@ class CacheImage
             @thumbnailImage = new Image64 '', @exif.thumbnail
         else
             @thumbnailImage = @fullImage
+        @updateHTMLNode()
         @updatePoint()
 
     updateImage: ->
@@ -51,16 +52,23 @@ class CacheImage
             piexif.remove @fullImage.data
         )
         @fullImage = binaryStringToImage64 newImageString
-        @HTMLNode.getElementsByTagName('a')[0].href = @fullImage.url
+        @updateHTMLNode()
 
     change: null  # date object at change time if change.
+    HTMLNode: null
     updatePoint: -> @mapPoint = createPoint this
-    toHTMLNode: ->
-        newNode = createInfoNode this
-        if @HTMLNode
-            isChecked = @HTMLNode.getElementsByTagName('input')[0].checked
-            newNode.getElementsByTagName('input')[0].checked = isChecked
-        @HTMLNode = newNode
+    updateHTMLNode: ->
+        isChecked = @select() if @HTMLNode
+        @HTMLNode = createInfoNode this
+        @select isChecked if isChecked
+    select: (tf) ->
+        if tf == true
+            @HTMLNode.getElementsByTagName('input')[0].checked = true
+        else if tf == false
+            @HTMLNode.getElementsByTagName('input')[0].checked = false
+        else
+            @HTMLNode.getElementsByTagName('input')[0].checked
+
 
 spexif.CacheImage = CacheImage
 

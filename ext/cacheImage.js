@@ -70,6 +70,7 @@
       } else {
         this.thumbnailImage = this.fullImage;
       }
+      this.updateHTMLNode();
       this.updatePoint();
     }
 
@@ -77,23 +78,36 @@
       var newImageString;
       newImageString = piexif.insert(this.exif.getBinaryString(), piexif.remove(this.fullImage.data));
       this.fullImage = binaryStringToImage64(newImageString);
-      return this.HTMLNode.getElementsByTagName('a')[0].href = this.fullImage.url;
+      return this.updateHTMLNode();
     };
 
     CacheImage.prototype.change = null;
+
+    CacheImage.prototype.HTMLNode = null;
 
     CacheImage.prototype.updatePoint = function() {
       return this.mapPoint = createPoint(this);
     };
 
-    CacheImage.prototype.toHTMLNode = function() {
-      var isChecked, newNode;
-      newNode = createInfoNode(this);
+    CacheImage.prototype.updateHTMLNode = function() {
+      var isChecked;
       if (this.HTMLNode) {
-        isChecked = this.HTMLNode.getElementsByTagName('input')[0].checked;
-        newNode.getElementsByTagName('input')[0].checked = isChecked;
+        isChecked = this.select();
       }
-      return this.HTMLNode = newNode;
+      this.HTMLNode = createInfoNode(this);
+      if (isChecked) {
+        return this.select(isChecked);
+      }
+    };
+
+    CacheImage.prototype.select = function(tf) {
+      if (tf === true) {
+        return this.HTMLNode.getElementsByTagName('input')[0].checked = true;
+      } else if (tf === false) {
+        return this.HTMLNode.getElementsByTagName('input')[0].checked = false;
+      } else {
+        return this.HTMLNode.getElementsByTagName('input')[0].checked;
+      }
     };
 
     return CacheImage;

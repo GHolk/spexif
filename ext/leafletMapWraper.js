@@ -32,7 +32,7 @@
         draggable: true,
         riseOnHover: true
       });
-      marker.bindPopup(image.toHTMLNode(), {
+      marker.bindPopup(image.HTMLNode, {
         autoClose: false
       });
       marker.on('dragend', function(distance) {
@@ -40,7 +40,8 @@
         latLng = this.getLatLng();
         image.exif.gps = [latLng.lng, latLng.lat];
         image.exif.update();
-        this.setPopupContent(image.toHTMLNode());
+        image.updateHTMLNode();
+        this.setPopupContent(image.HTMLNode);
         return this.openPopup();
       });
       return marker;

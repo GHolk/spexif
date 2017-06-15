@@ -27,14 +27,15 @@ class LeafletMap
             draggable: true
             riseOnHover: true
         }
-        marker.bindPopup image.toHTMLNode(), {
+        marker.bindPopup image.HTMLNode, {
             autoClose: false
         }
         marker.on 'dragend', (distance) ->
             latLng = this.getLatLng()
             image.exif.gps = [latLng.lng, latLng.lat]
             image.exif.update()
-            this.setPopupContent image.toHTMLNode()
+            image.updateHTMLNode()
+            this.setPopupContent image.HTMLNode
             this.openPopup()
 
         return marker
