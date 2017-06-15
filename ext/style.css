@@ -1,5 +1,5 @@
 
-form {
+form#load-image {
     position: fixed;
     bottom: 1ex;
     left: 1ex;

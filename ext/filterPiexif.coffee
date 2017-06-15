@@ -2,9 +2,21 @@
 speaker = spexif.speaker
 
 class FilterPiexif
+    exifDateToDateObject = (exifDate) ->
+        [yearPart, timePart] = exifDate.trim().split ' '
+        yearPart = yearPart.replace /:/g, '-'
+        return new Date "#{yearPart} #{timePart}"
+
+    dateObjectToExifDate = (date) ->
+        [yearPart, timePart] = date.toISOString().split 'T'
+        yearPart = yearPart.replace /-/g, ':'
+        timePart = timePart.replace /\..*$/, ''
+        return "#{yearPart} #{timePart}"
+
     get =
         maker: (exif) -> exif['0th'][piexif.ImageIFD.Make].trim()
-        date: (exif) -> exif.Exif[piexif.ExifIFD.DateTimeOriginal].trim()
+        date: (exif) ->
+            exifDateToDateObject exif.Exif[piexif.ExifIFD.DateTimeOriginal]
         oneOfGPS: (exif, key) ->
             dms = exif.GPS[ piexif.GPSIFD[key] ]
             ratio = 1
@@ -20,7 +32,8 @@ class FilterPiexif
     set =
         maker: (exif, maker) -> exif['0th'][piexif.ImageIFD.Make] = maker
         date: (exif, date) ->
-            exif.Exif[ piexif.ExifIFD.DateTimeOriginal ] = date
+            exif.Exif[ piexif.ExifIFD.DateTimeOriginal ] =
+                dateObjectToExifDate date
 
         oneOfGPS: (exif, key, dmsText) ->
             toInt = (f) -> Math.floor f
@@ -39,7 +52,7 @@ class FilterPiexif
 
     gps: [119,23]
     maker: 'iPhone 1'
-    date: '1910:10:10 23:59:59'
+    date: new Date 0
     constructor: (allExif) ->
         @allExif = allExif
         for key in ['date', 'maker', 'gps']
@@ -65,12 +78,11 @@ class FilterPiexif
 
     getBinaryString: -> piexif.dump @allExif
 
-    createHTMLNode = ->
-        preNode = document.createElement 'pre'
-        preNode.textContent = [@date, @maker, @gps].join '\n'
-        return preNode
-
-    toHTMLNode: -> @HTMLNode || @HTMLNode = createHTMLNode.call this
+    toString: -> """
+        #{@date.toISOString()}
+        #{@maker}
+        #{@gps}
+    """
 
 spexif.FilterPiexif = FilterPiexif
 

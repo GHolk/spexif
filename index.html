@@ -18,7 +18,7 @@
 <h2>image no gps data</h2>
 </div>
 
-<form action="query-image.html" method="get">
+<form id="load-image" action="query-image.html" method="get">
 <input type="file" multiple />
 </form>
 
@@ -34,6 +34,16 @@
     <button id="update-image-binary">save change</button>
     <button id="invert-select-image">invert select</button>
     <button id="clear-select">clear select</button>
+    <form id="query-select-image">
+        <label>
+            <input name="start-date" type="date">
+            start date
+        </label>
+        <label>
+            <input name="end-date" type="date">
+            end date
+        </label>
+    </form>
 </div>
 
 <script> window.spexif = {} </script>

@@ -15,6 +15,7 @@
     exifArray[2] = exifArray[2].split(/,/).map(function(s) {
       return Number(s);
     });
+    exifArray[0] = new Date(exifArray[0]);
     exif = image.exif;
     exif.date = exifArray[0], exif.maker = exifArray[1], exif.gps = exifArray[2];
     image.exif.update();
@@ -32,7 +33,7 @@
       return String(s).trim();
     };
     textarea = newNode.getElementsByTagName('textarea')[0];
-    textarea.value = (trim(exif.date)) + "\n" + (trim(exif.maker)) + "\n" + (trim(exif.gps));
+    textarea.value = cacheImage.exif.toString();
     textarea.addEventListener('change', function() {
       updateExif(cacheImage, this.value);
       return this.parentNode.getElementsByTagName('input')[0].checked = true;

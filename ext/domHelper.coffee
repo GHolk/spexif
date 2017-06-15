@@ -10,6 +10,7 @@ template = do ->
 updateExif = (image, text) ->
     exifArray = text.split /\n/g
     exifArray[2] = exifArray[2].split(/,/).map (s) -> Number(s)
+    exifArray[0] = new Date exifArray[0]
     exif = image.exif
     [exif.date, exif.maker, exif.gps] = exifArray
     image.exif.update()
@@ -25,11 +26,7 @@ createInfoNode = (cacheImage) ->
     exif = cacheImage.exif
     trim = (s) -> String(s).trim()
     textarea = newNode.getElementsByTagName('textarea')[0]
-    textarea.value = """
-        #{trim exif.date}
-        #{trim exif.maker}
-        #{trim exif.gps}
-    """
+    textarea.value = cacheImage.exif.toString()
     textarea.addEventListener 'change', ->
         updateExif cacheImage, @value
         @parentNode.getElementsByTagName('input')[0].checked = true

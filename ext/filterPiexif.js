@@ -5,14 +5,29 @@
   speaker = spexif.speaker;
 
   FilterPiexif = (function() {
-    var createHTMLNode, get, set;
+    var dateObjectToExifDate, exifDateToDateObject, get, set;
+
+    exifDateToDateObject = function(exifDate) {
+      var ref, timePart, yearPart;
+      ref = exifDate.trim().split(' '), yearPart = ref[0], timePart = ref[1];
+      yearPart = yearPart.replace(/:/g, '-');
+      return new Date(yearPart + " " + timePart);
+    };
+
+    dateObjectToExifDate = function(date) {
+      var ref, timePart, yearPart;
+      ref = date.toISOString().split('T'), yearPart = ref[0], timePart = ref[1];
+      yearPart = yearPart.replace(/-/g, ':');
+      timePart = timePart.replace(/\..*$/, '');
+      return yearPart + " " + timePart;
+    };
 
     get = {
       maker: function(exif) {
         return exif['0th'][piexif.ImageIFD.Make].trim();
       },
       date: function(exif) {
-        return exif.Exif[piexif.ExifIFD.DateTimeOriginal].trim();
+        return exifDateToDateObject(exif.Exif[piexif.ExifIFD.DateTimeOriginal]);
       },
       oneOfGPS: function(exif, key) {
         var decimal, dms, ratio;
@@ -39,7 +54,7 @@
         return exif['0th'][piexif.ImageIFD.Make] = maker;
       },
       date: function(exif, date) {
-        return exif.Exif[piexif.ExifIFD.DateTimeOriginal] = date;
+        return exif.Exif[piexif.ExifIFD.DateTimeOriginal] = dateObjectToExifDate(date);
       },
       oneOfGPS: function(exif, key, dmsText) {
         var toFrac, toInt;
@@ -69,7 +84,7 @@
 
     FilterPiexif.prototype.maker = 'iPhone 1';
 
-    FilterPiexif.prototype.date = '1910:10:10 23:59:59';
+    FilterPiexif.prototype.date = new Date(0);
 
     function FilterPiexif(allExif) {
       var err, j, key, len, ref;
@@ -117,15 +132,8 @@
       return piexif.dump(this.allExif);
     };
 
-    createHTMLNode = function() {
-      var preNode;
-      preNode = document.createElement('pre');
-      preNode.textContent = [this.date, this.maker, this.gps].join('\n');
-      return preNode;
-    };
-
-    FilterPiexif.prototype.toHTMLNode = function() {
-      return this.HTMLNode || (this.HTMLNode = createHTMLNode.call(this));
+    FilterPiexif.prototype.toString = function() {
+      return (this.date.toISOString()) + "\n" + this.maker + "\n" + this.gps;
     };
 
     return FilterPiexif;

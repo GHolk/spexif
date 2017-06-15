@@ -158,10 +158,21 @@
         imageArray = this.list;
       }
       return imageArray.forEach(function(image) {
-        var checkNode;
-        checkNode = image.HTMLNode.getElementsByTagName('input')[0];
-        return checkNode.checked = !checkNode.checked;
+        var isCheck;
+        isCheck = image.select();
+        return image.select(!isCheck);
       });
+    };
+
+    ImageManager.prototype.selectByDateInterval = function(startDate, endDate, selectMethod) {
+      if (typeof selectMethod !== 'function') {
+        selectMethod = function(image) {
+          return image.select(true);
+        };
+      }
+      return this.list.filter(function(image) {
+        return image.exif.date >= startDate && image.exif.date <= endDate;
+      }).forEach(selectMethod);
     };
 
     return ImageManager;

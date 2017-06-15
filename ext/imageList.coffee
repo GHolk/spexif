@@ -89,8 +89,17 @@ class ImageManager extends ImageList
 
     invertSelect: (imageArray = @list) ->
         imageArray.forEach (image) ->
-            checkNode = image.HTMLNode.getElementsByTagName('input')[0]
-            checkNode.checked = !checkNode.checked
+            isCheck = image.select()
+            image.select !isCheck
+
+    selectByDateInterval: (startDate, endDate, selectMethod) ->
+        if typeof selectMethod != 'function'
+            selectMethod = (image) -> image.select true
+        @list
+            .filter (image) ->
+                image.exif.date >= startDate &&
+                image.exif.date <= endDate
+            .forEach selectMethod
 
 spexif.imageManager = new ImageManager()
 
