@@ -71,14 +71,15 @@
         this.thumbnailImage = this.fullImage;
       }
       this.updateHTMLNode();
-      this.updatePoint();
+      this.mapPoint = createPoint(this);
     }
 
     CacheImage.prototype.updateImage = function() {
       var newImageString;
-      newImageString = piexif.insert(this.exif.getBinaryString(), piexif.remove(this.fullImage.data));
+      newImageString = piexif.insert(this.exif.getBinaryString(), this.fullImage.data);
       this.fullImage = binaryStringToImage64(newImageString);
-      return this.updateHTMLNode();
+      this.updateHTMLNode();
+      return this.updatePoint();
     };
 
     CacheImage.prototype.change = null;
@@ -86,7 +87,7 @@
     CacheImage.prototype.HTMLNode = null;
 
     CacheImage.prototype.updatePoint = function() {
-      return this.mapPoint = createPoint(this);
+      return this.mapPoint.setPopupContent(this.HTMLNode);
     };
 
     CacheImage.prototype.updateHTMLNode = function() {

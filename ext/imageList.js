@@ -121,7 +121,7 @@
 
     ImageManager.prototype.getSelectedImages = function() {
       return this.list.filter(function(cacheImage) {
-        return cacheImage.HTMLNode.getElementsByTagName('input')[0].checked;
+        return cacheImage.select();
       });
     };
 
@@ -140,7 +140,16 @@
         imageArray = this.list;
       }
       return imageArray.forEach(function(image) {
-        return image.HTMLNode.getElementsByTagName('input')[0].checked = true;
+        return image.select(true);
+      });
+    };
+
+    ImageManager.prototype.clearSelect = function(imageArray) {
+      if (imageArray == null) {
+        imageArray = this.list;
+      }
+      return imageArray.forEach(function(image) {
+        return image.select(false);
       });
     };
 

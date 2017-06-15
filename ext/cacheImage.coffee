@@ -44,19 +44,20 @@ class CacheImage
         else
             @thumbnailImage = @fullImage
         @updateHTMLNode()
-        @updatePoint()
+        @mapPoint = createPoint this
 
     updateImage: ->
         newImageString = piexif.insert(
             @exif.getBinaryString()
-            piexif.remove @fullImage.data
+            @fullImage.data
         )
         @fullImage = binaryStringToImage64 newImageString
         @updateHTMLNode()
+        @updatePoint()
 
     change: null  # date object at change time if change.
     HTMLNode: null
-    updatePoint: -> @mapPoint = createPoint this
+    updatePoint: -> @mapPoint.setPopupContent @HTMLNode
     updateHTMLNode: ->
         isChecked = @select() if @HTMLNode
         @HTMLNode = createInfoNode this

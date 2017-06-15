@@ -74,8 +74,7 @@ class ImageManager extends ImageList
         @list.filter (cacheImage) -> cacheImage.change
 
     getSelectedImages: ->
-        @list.filter (cacheImage) ->
-            cacheImage.HTMLNode.getElementsByTagName('input')[0].checked
+        @list.filter (cacheImage) -> cacheImage.select()
 
     writeImages: (imageArray = @getSelectedImages()) ->
         imageArray.forEach (image) ->
@@ -83,8 +82,10 @@ class ImageManager extends ImageList
         @selectImages imageArray
 
     selectImages: (imageArray = @list) ->
-        imageArray.forEach (image) ->
-            image.HTMLNode.getElementsByTagName('input')[0].checked = true
+        imageArray.forEach (image) -> image.select true
+
+    clearSelect: (imageArray = @list) ->
+        imageArray.forEach (image) -> image.select false
 
     invertSelect: (imageArray = @list) ->
         imageArray.forEach (image) ->

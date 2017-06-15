@@ -48,6 +48,10 @@
     return spexif.imageManager.selectImages();
   };
 
+  document.getElementById('clear-select').onclick = function() {
+    return spexif.imageManager.clearSelect();
+  };
+
   document.getElementById('invert-select-image').onclick = function() {
     return spexif.imageManager.invertSelect();
   };
