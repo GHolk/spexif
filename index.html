@@ -18,9 +18,9 @@
 <h2>image no gps data</h2>
 </div>
 
-<form id="load-image" action="query-image.html" method="get">
-<input type="file" multiple />
-<input type="submit">
+<form id="load-image" action="receive-images.php" method="post">
+<input name="upload-images[]" type="file" multiple />
+<input type="submit" value="upload">
 </form>
 
 <div id="template">
@@ -35,28 +35,29 @@
     <button id="update-image-binary">save change</button>
     <button id="invert-select-image">invert select</button>
     <button id="clear-select">clear select</button>
-    <form id="query-select-image">
-        <label>
-            <input name="start-date" type="date">
-            start date
-        </label>
-        <label>
-            <input name="end-date" type="date">
-            end date
-        </label>
-        <div>
-            <label>
-                <input type="radio" name="query-from" value="local" checked>
-                search in local
-            </label>
-            <label>
-                <input type="radio" name="query-from" value="server">
-                search from server
-            </label>
-        </div>
-        <input type="submit">
-    </form>
 </div>
+
+<form id="query-select-image" action="query-by-date.php">
+    <label>
+        <input name="start-date" type="date">
+        start date
+    </label>
+    <label>
+        <input name="end-date" type="date">
+        end date
+    </label>
+    <div>
+        <label>
+            <input type="radio" name="query-from" value="local" checked>
+            search in local
+        </label>
+        <label>
+            <input type="radio" name="query-from" value="server">
+            search from server
+        </label>
+    </div>
+    <input type="submit" value="query">
+</form>
 
 <script> window.spexif = {} </script>
 <script src="ext/leafletMapWraper.js"></script>

@@ -19,13 +19,20 @@
 
   fileForm = document.getElementById('load-image');
 
-  fileForm.children[0].addEventListener('change', whenInputFiles, true);
+  fileForm.elements['upload-images[]'].addEventListener('change', whenInputFiles, true);
 
-  fileForm.children[1].addEventListener('click', function(evt) {
-    var formData;
+  fileForm.addEventListener('submit', function(evt) {
+    var formData, xmlRequest;
     evt.preventDefault();
     formData = new FormData();
-    return window.uploadImages = imageManager.getSelectedImages();
+    spexif.imageManager.getSelectedImages().forEach(function(image) {
+      formData.append('m_imagefiles[]', image.fullImage.blob);
+      return console.log(image.fullImage.blob.name);
+    });
+    xmlRequest = new XMLHttpRequest();
+    xmlRequest.open(this.method.toUpperCase(), this.action);
+    console.log(this.method.toUpperCase() + this.action);
+    return xmlRequest.send(formData);
   });
 
 }).call(this);

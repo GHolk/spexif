@@ -10,17 +10,17 @@
 
   createInfoNode = spexif.domHelper.createInfoNode;
 
-  binaryStringToImage64 = function(binaryString) {
+  binaryStringToImage64 = function(binaryString, fileName) {
     var blob, i, j, len, u8, x;
     u8 = new Uint8Array(binaryString.length);
     for (i = j = 0, len = u8.length; j < len; i = ++j) {
       x = u8[i];
       u8[i] = binaryString.charCodeAt(i);
     }
-    blob = new Blob([u8], {
+    blob = new File([u8], fileName, {
       type: 'image/jpeg'
     });
-    return new Image64(URL.createObjectURL(blob), binaryString);
+    return new Image64(URL.createObjectURL(blob), binaryString, blob);
   };
 
   Image64 = (function() {
@@ -76,9 +76,10 @@
     }
 
     CacheImage.prototype.updateImage = function() {
-      var newImageString;
+      var newImageString, oldBlob;
       newImageString = piexif.insert(this.exif.getBinaryString(), this.fullImage.data);
-      this.fullImage = binaryStringToImage64(newImageString);
+      oldBlob = this.fullImage.blob;
+      this.fullImage = binaryStringToImage64(newImageString, oldBlob.name);
       this.updateHTMLNode();
       return this.updatePoint();
     };

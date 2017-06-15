@@ -10,9 +10,17 @@ whenInputFiles = (evt) ->
 
 fileForm = document.getElementById 'load-image'
 
-fileForm.children[0].addEventListener 'change', whenInputFiles, true
-fileForm.children[1].addEventListener 'click', (evt) ->
+fileForm
+    .elements['upload-images[]']
+    .addEventListener 'change', whenInputFiles, true
+
+fileForm.addEventListener 'submit', (evt) ->
     evt.preventDefault()
     formData = new FormData()
-    window.uploadImages = imageManager.getSelectedImages()
+    spexif.imageManager.getSelectedImages().forEach (image) ->
+        formData.append @elements[0].name, image.fullImage.blob
+
+    xmlRequest = new XMLHttpRequest()
+    xmlRequest.open @method.toUpperCase(), @action
+    xmlRequest.send formData
 
