@@ -34,6 +34,7 @@ class ImageManager extends ImageList
             image = new CacheImage(
                 url
                 arrayBufferToBinaryString reader.result
+                blob
             )
             @add image
             @show image
@@ -97,8 +98,8 @@ class ImageManager extends ImageList
             selectMethod = (image) -> image.select true
         @list
             .filter (image) ->
-                image.exif.date >= startDate &&
-                image.exif.date <= endDate
+                !(image.exif.date < startDate) &&
+                !(image.exif.date > endDate)
             .forEach selectMethod
 
 spexif.imageManager = new ImageManager()

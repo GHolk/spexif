@@ -12,7 +12,7 @@ binaryStringToImage64 = (binaryString) ->
     return new Image64 (URL.createObjectURL blob), binaryString
 
 class Image64
-    constructor: (url, data) ->
+    constructor: (url, data, blob) ->
         if url.slice(0,23) == 'data:image/jpeg;base64,'
             @dataType = 'dataURL'
             @url = url
@@ -21,9 +21,10 @@ class Image64
             @dataType = 'binaryString'
             @url = url || 'data:image/jpeg;base64,' + btoa data
             @data = data
+            @blob = blob
         else
             speaker.errorFriendly 'input is not jpeg file!'
-            throw 'input is not jpeg file!' + '\n' + data
+            throw new Error 'input is not jpeg file!'
 
     toString: -> @data
 
@@ -36,8 +37,8 @@ class CacheImage
         else
             null
 
-    constructor: (url, data) ->
-        @fullImage = new Image64 url, data
+    constructor: (url, data, blob) ->
+        @fullImage = new Image64 url, data, blob
         @exif = createEXIF data
         if @exif.thumbnail
             @thumbnailImage = new Image64 '', @exif.thumbnail

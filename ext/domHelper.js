@@ -53,6 +53,28 @@
     return spexif.imageManager.invertSelect();
   };
 
+  document.getElementById('query-select-image').onsubmit = function(evt) {
+    var checkDate, endDate, startDate;
+    evt.preventDefault();
+    checkDate = function(dateString) {
+      var date;
+      date = new Date(dateString);
+      if (date.valueOf() === (0/0)) {
+        return null;
+      } else {
+        return date;
+      }
+    };
+    startDate = checkDate(this.elements['start-date'].value);
+    endDate = checkDate(this.elements['end-date'].value);
+    switch (this.elements['query-from'].value) {
+      case 'local':
+        return spexif.imageManager.selectByDateInterval(startDate, endDate);
+      case 'server':
+        throw new Error('not implement query from server now.');
+    }
+  };
+
   spexif.domHelper = {
     createInfoNode: createInfoNode
   };

@@ -35,10 +35,30 @@ createInfoNode = (cacheImage) ->
 
 document.getElementById 'update-image-binary'
     .onclick = -> spexif.imageManager.writeImages()
+
 document.getElementById 'clear-select'
     .onclick = -> spexif.imageManager.clearSelect()
+
 document.getElementById 'invert-select-image'
     .onclick = -> spexif.imageManager.invertSelect()
+
+document.getElementById 'query-select-image'
+    .onsubmit = (evt) ->
+        evt.preventDefault()
+        checkDate = (dateString) ->
+            date = new Date dateString
+            if date.valueOf() == NaN
+                return null
+            else
+                return date
+
+        startDate = checkDate @elements['start-date'].value
+        endDate = checkDate @elements['end-date'].value
+        switch @elements['query-from'].value
+            when 'local'
+                spexif.imageManager.selectByDateInterval startDate, endDate
+            when 'server'
+                throw new Error 'not implement query from server now.'
 
 spexif.domHelper = {createInfoNode}
 

@@ -63,7 +63,7 @@
       whenArrayBufferRead = (function(_this) {
         return function() {
           var image;
-          image = new CacheImage(url, arrayBufferToBinaryString(reader.result));
+          image = new CacheImage(url, arrayBufferToBinaryString(reader.result), blob);
           _this.add(image);
           return _this.show(image);
         };
@@ -171,7 +171,7 @@
         };
       }
       return this.list.filter(function(image) {
-        return image.exif.date >= startDate && image.exif.date <= endDate;
+        return !(image.exif.date < startDate) && !(image.exif.date > endDate);
       }).forEach(selectMethod);
     };
 

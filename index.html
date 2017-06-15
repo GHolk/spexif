@@ -20,6 +20,7 @@
 
 <form id="load-image" action="query-image.html" method="get">
 <input type="file" multiple />
+<input type="submit">
 </form>
 
 <div id="template">
@@ -43,6 +44,17 @@
             <input name="end-date" type="date">
             end date
         </label>
+        <div>
+            <label>
+                <input type="radio" name="query-from" value="local" checked>
+                search in local
+            </label>
+            <label>
+                <input type="radio" name="query-from" value="server">
+                search from server
+            </label>
+        </div>
+        <input type="submit">
     </form>
 </div>
 

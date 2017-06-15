@@ -24,7 +24,7 @@
   };
 
   Image64 = (function() {
-    function Image64(url, data) {
+    function Image64(url, data, blob) {
       if (url.slice(0, 23) === 'data:image/jpeg;base64,') {
         this.dataType = 'dataURL';
         this.url = url;
@@ -33,9 +33,10 @@
         this.dataType = 'binaryString';
         this.url = url || 'data:image/jpeg;base64,' + btoa(data);
         this.data = data;
+        this.blob = blob;
       } else {
         speaker.errorFriendly('input is not jpeg file!');
-        throw 'input is not jpeg file!' + '\n' + data;
+        throw new Error('input is not jpeg file!');
       }
     }
 
@@ -62,8 +63,8 @@
       }
     };
 
-    function CacheImage(url, data) {
-      this.fullImage = new Image64(url, data);
+    function CacheImage(url, data, blob) {
+      this.fullImage = new Image64(url, data, blob);
       this.exif = createEXIF(data);
       if (this.exif.thumbnail) {
         this.thumbnailImage = new Image64('', this.exif.thumbnail);

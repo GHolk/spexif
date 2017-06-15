@@ -8,6 +8,11 @@ whenInputFiles = (evt) ->
     for file in files
         imageManager.addFromBlob file
 
-(document.getElementsByTagName 'input')[0].addEventListener 'change', whenInputFiles, true
+fileForm = document.getElementById 'load-image'
 
+fileForm.children[0].addEventListener 'change', whenInputFiles, true
+fileForm.children[1].addEventListener 'click', (evt) ->
+    evt.preventDefault()
+    formData = new FormData()
+    window.uploadImages = imageManager.getSelectedImages()
 
