@@ -44,10 +44,6 @@
     return spexif.imageManager.writeImages();
   };
 
-  document.getElementById('select-all-image').onclick = function() {
-    return spexif.imageManager.selectImages();
-  };
-
   document.getElementById('clear-select').onclick = function() {
     return spexif.imageManager.clearSelect();
   };

@@ -38,8 +38,6 @@ createInfoNode = (cacheImage) ->
 
 document.getElementById 'update-image-binary'
     .onclick = -> spexif.imageManager.writeImages()
-document.getElementById 'select-all-image'
-    .onclick = -> spexif.imageManager.selectImages()
 document.getElementById 'clear-select'
     .onclick = -> spexif.imageManager.clearSelect()
 document.getElementById 'invert-select-image'
