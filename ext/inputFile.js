@@ -22,16 +22,15 @@
   fileForm.elements['upload-images[]'].addEventListener('change', whenInputFiles, true);
 
   fileForm.addEventListener('submit', function(evt) {
-    var formData, xmlRequest;
+    var entryName, formData, xmlRequest;
     evt.preventDefault();
     formData = new FormData();
+    entryName = this.elements[0].name;
     spexif.imageManager.getSelectedImages().forEach(function(image) {
-      formData.append('m_imagefiles[]', image.fullImage.blob);
-      return console.log(image.fullImage.blob.name);
+      return formData.append(entryName, image.fullImage.blob);
     });
     xmlRequest = new XMLHttpRequest();
     xmlRequest.open(this.method.toUpperCase(), this.action);
-    console.log(this.method.toUpperCase() + this.action);
     return xmlRequest.send(formData);
   });
 

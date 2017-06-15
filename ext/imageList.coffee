@@ -3,23 +3,18 @@ myMap = spexif.myMap
 CacheImage = spexif.CacheImage
 getSelectedImages = spexif.domHelper.getSelectedImages
 
-class ImageList
-    constructor: ->
-        @list = []
 
+class ImageManager
     add: (cacheImage) ->
         @list.push cacheImage
 
     remove: (cacheImage) ->
         @list = @list.filter (image) -> image != cacheImage
 
-
-class ImageManager extends ImageList
     constructor: ->
         @list = []
         @map = myMap
         @asideNode = document.getElementById 'image-container'
-        @select = new ImageList()
 
     arrayBufferToBinaryString = (arraybuffer) ->
         u8 = new Uint8Array arraybuffer

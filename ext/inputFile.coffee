@@ -17,8 +17,9 @@ fileForm
 fileForm.addEventListener 'submit', (evt) ->
     evt.preventDefault()
     formData = new FormData()
+    entryName = @elements[0].name
     spexif.imageManager.getSelectedImages().forEach (image) ->
-        formData.append @elements[0].name, image.fullImage.blob
+        formData.append entryName, image.fullImage.blob
 
     xmlRequest = new XMLHttpRequest()
     xmlRequest.open @method.toUpperCase(), @action
