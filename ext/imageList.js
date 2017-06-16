@@ -88,7 +88,7 @@
       request = new XMLHttpRequest();
       request.open('GET', url, true);
       request.responseType = 'blob';
-      addBlobImageToList = this.addFromURL.bind(this);
+      addBlobImageToList = this.addFromBlob.bind(this);
       request.onload = function() {
         return addBlobImageToList(this.response);
       };
@@ -146,7 +146,7 @@
       });
     };
 
-    ImageManager.prototype.selectByDateInterval = function(startDate, endDate, selectMethod) {
+    ImageManager.prototype.selectByDate = function(startDate, endDate, selectMethod) {
       if (typeof selectMethod !== 'function') {
         selectMethod = function(image) {
           return image.select(true);
@@ -157,24 +157,28 @@
       }).forEach(selectMethod);
     };
 
-    ImageManager.prototype.queryDateFromServer = function(startDate, endDate) {
-      var addDateQuery, addURLToList, queryArray, req, url;
-      url = 'gisquery.php';
-      addURLToList = this.addFromURL.bind(this);
-      queryArray = [];
-      queryArray.push('Type=Time');
-      addDateQuery = function(date, type, array) {
-        var pair;
-        if (date) {
-          pair = type + '=' + date.toISOString().replace(/T.*$/, '');
-          return array.push(date);
+    ImageManager.prototype.queryDateFromServer = function(startDate, endDate, url) {
+      var addDateStruct, addURLToList, queryArray, queryString, req;
+      addDateStruct = function(struct, array) {
+        if (struct) {
+          struct.value = struct.value.toISOString().replace(/T.*$/, '');
         }
+        return array.push(struct);
       };
-      addDateQuery(startDate, 'DateFrom', queryArray);
-      addDateQuery(endDate, 'DateTo', queryArray);
+      queryArray = [];
+      queryArray.push({
+        name: 'Type',
+        value: 'Time'
+      });
+      addDateStruct(startDate, queryArray);
+      addDateStruct(endDate, queryArray);
+      queryString = '?' + queryArray.map(function(struct) {
+        return struct.name + "=" + struct.value;
+      }).join('&');
       req = new XMLHttpRequest();
       req.responseType = 'document';
-      req.open('GET', url + '?' + queryArray.join('&'));
+      req.open('GET', url + queryString);
+      addURLToList = this.addFromURL.bind(this);
       req.onload = function() {
         var i, img, imgs, len, results;
         imgs = this.response.getElementsByTagName('img');
@@ -185,7 +189,8 @@
         }
         return results;
       };
-      return req.send();
+      req.send();
+      return window.req = req;
     };
 
     return ImageManager;

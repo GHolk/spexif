@@ -46,20 +46,21 @@ document.getElementById 'query-select-image'
     .onsubmit = (evt) ->
         evt.preventDefault()
 
-        checkDate = (dateString) ->
-            date = new Date dateString
+        structDate = (dateNode) ->
+            date = new Date dateNode.value
             if date.valueOf() == NaN
                 return null
             else
-                return date
+                return {name:dateNode.name,value:date}
 
-        startDate = checkDate @elements['start-date'].value
-        endDate = checkDate @elements['end-date'].value
+        startDate = structDate @elements['DateFrom']
+        endDate = structDate @elements['DateTo']
         switch @elements['query-from'].value
             when 'local'
-                spexif.imageManager.selectByDateInterval startDate, endDate
+                spexif.imageManager.selectByDate startDate, endDate
             when 'server'
-                spexif.imageManager.queryDateFromServer startDate, endDate
+                spexif.imageManager
+                    .queryDateFromServer startDate, endDate, @action
 
 spexif.domHelper = {createInfoNode}
 

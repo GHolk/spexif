@@ -18,8 +18,8 @@
 <h2>image no gps data</h2>
 </div>
 
-<form id="load-image" action="receive-images.php" method="post">
-<input name="upload-images[]" type="file" multiple />
+<form id="load-image" action="uploadimage.php" method="post">
+<input name="m_imagefiles[]" type="file" multiple />
 <input type="submit" value="upload">
 </form>
 
@@ -37,13 +37,13 @@
     <button id="clear-select">clear select</button>
 </div>
 
-<form id="query-select-image" action="query-by-date.php">
+<form id="query-select-image" action="gisquery.php" method="get">
     <label>
-        <input name="start-date" type="date">
+        <input name="DateFrom" type="date">
         start date
     </label>
     <label>
-        <input name="end-date" type="date">
+        <input name="DateTo" type="date">
         end date
     </label>
     <div>
@@ -58,6 +58,8 @@
     </div>
     <input type="submit" value="query">
 </form>
+
+<a href="login.php" target="_blank">登入</a>
 
 <script> window.spexif = {} </script>
 <script src="ext/leafletMapWraper.js"></script>

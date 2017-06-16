@@ -19,7 +19,7 @@
 
   fileForm = document.getElementById('load-image');
 
-  fileForm.elements['upload-images[]'].addEventListener('change', whenInputFiles, true);
+  fileForm.elements[0].addEventListener('change', whenInputFiles, true);
 
   fileForm.addEventListener('submit', function(evt) {
     var entryName, formData, xmlRequest;

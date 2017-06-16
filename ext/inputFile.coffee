@@ -11,7 +11,7 @@ whenInputFiles = (evt) ->
 fileForm = document.getElementById 'load-image'
 
 fileForm
-    .elements['upload-images[]']
+    .elements[0]
     .addEventListener 'change', whenInputFiles, true
 
 fileForm.addEventListener 'submit', (evt) ->

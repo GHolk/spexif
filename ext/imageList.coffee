@@ -62,7 +62,7 @@ class ImageManager
         request = new XMLHttpRequest()
         request.open 'GET', url, true
         request.responseType = 'blob'
-        addBlobImageToList = @addFromURL.bind this
+        addBlobImageToList = @addFromBlob.bind this
         request.onload = -> addBlobImageToList @response
         request.send ''
 
@@ -88,7 +88,7 @@ class ImageManager
             isCheck = image.select()
             image.select !isCheck
 
-    selectByDateInterval: (startDate, endDate, selectMethod) ->
+    selectByDate: (startDate, endDate, selectMethod) ->
         if typeof selectMethod != 'function'
             selectMethod = (image) -> image.select true
         @list
@@ -97,29 +97,33 @@ class ImageManager
                 !(image.exif.date > endDate)
             .forEach selectMethod
 
-    queryDateFromServer: (startDate, endDate) ->
-        url = 'gisquery.php'
-        addURLToList = @addFromURL.bind this
+    queryDateFromServer: (startDate, endDate, url) ->
+        addDateStruct = (struct, array) ->
+            if struct
+                struct.value =
+                    struct.value.toISOString().replace(/T.*$/,'')
+            array.push struct
 
         queryArray = []
-        queryArray.push 'Type=Time'
+        queryArray.push {name:'Type',value:'Time'}
+        addDateStruct startDate, queryArray
+        addDateStruct endDate, queryArray
 
-        addDateQuery = (date, type, array) ->
-            if date
-                pair = type + '=' + date.toISOString().replace(/T.*$/,'')
-                array.push date
-
-        addDateQuery startDate, 'DateFrom', queryArray
-        addDateQuery endDate, 'DateTo', queryArray
+        queryString = '?' + queryArray
+            .map (struct) -> "#{struct.name}=#{struct.value}"
+            .join '&'
 
         req = new XMLHttpRequest()
         req.responseType = 'document'
-        req.open 'GET', url + '?' + queryArray.join '&'
+        req.open 'GET', url + queryString
+
+        addURLToList = @addFromURL.bind this
         req.onload = ->
             imgs = @response.getElementsByTagName 'img'
             for img in imgs
                 addURLToList img.src
         req.send()
+        window.req = req
 
 spexif.imageManager = new ImageManager()
 

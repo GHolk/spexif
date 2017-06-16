@@ -54,24 +54,27 @@
   };
 
   document.getElementById('query-select-image').onsubmit = function(evt) {
-    var checkDate, endDate, startDate;
+    var endDate, startDate, structDate;
     evt.preventDefault();
-    checkDate = function(dateString) {
+    structDate = function(dateNode) {
       var date;
-      date = new Date(dateString);
+      date = new Date(dateNode.value);
       if (date.valueOf() === (0/0)) {
         return null;
       } else {
-        return date;
+        return {
+          name: dateNode.name,
+          value: date
+        };
       }
     };
-    startDate = checkDate(this.elements['start-date'].value);
-    endDate = checkDate(this.elements['end-date'].value);
+    startDate = structDate(this.elements['DateFrom']);
+    endDate = structDate(this.elements['DateTo']);
     switch (this.elements['query-from'].value) {
       case 'local':
-        return spexif.imageManager.selectByDateInterval(startDate, endDate);
+        return spexif.imageManager.selectByDate(startDate, endDate);
       case 'server':
-        return spexif.imageManager.queryDateFromServer(startDate, endDate);
+        return spexif.imageManager.queryDateFromServer(startDate, endDate, this.action);
     }
   };
 
