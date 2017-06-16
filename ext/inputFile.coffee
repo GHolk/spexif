@@ -1,6 +1,7 @@
 
 CacheImage = spexif.CacheImage
 imageManager = spexif.imageManager
+speaker = spexif.speaker
 
 whenInputFiles = (evt) ->
     files = evt.target.files
@@ -16,12 +17,22 @@ fileForm
 
 fileForm.addEventListener 'submit', (evt) ->
     evt.preventDefault()
-    formData = new FormData()
-    entryName = @elements[0].name
-    spexif.imageManager.getSelectedImages().forEach (image) ->
-        formData.append entryName, image.fullImage.blob
 
-    xmlRequest = new XMLHttpRequest()
-    xmlRequest.open @method.toUpperCase(), @action
-    xmlRequest.send formData
+    entryName = @elements[0].name
+    imageList = spexif.imageManager.getSelectedImages()
+    
+    if imageList.length > 0
+        formData = new FormData()
+
+        imageList.forEach (image) ->
+            formData.append entryName, image.fullImage.blob
+
+        xmlRequest = new XMLHttpRequest()
+        xmlRequest.open @method.toUpperCase(), @action
+        xmlRequest.onload = ->
+            speaker.logFriendly 'successful upload selected image!'
+        xmlRequest.send formData
+
+    else
+        speaker.errorFriendly 'no image selected.'
 

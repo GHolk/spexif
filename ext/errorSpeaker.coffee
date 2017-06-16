@@ -7,6 +7,8 @@ class Speaker
         @boardNode.appendChild document.createTextNode err + '\n'
         @debuger.error err
         return err
+    logFriendly: (log) ->
+        @boardNode.appendChild document.createTextNode log + '\n'
     error: (err) ->
         @debuger.error err
     log: (lg) ->

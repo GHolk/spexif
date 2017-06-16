@@ -14,6 +14,10 @@
       return err;
     };
 
+    Speaker.prototype.logFriendly = function(log) {
+      return this.boardNode.appendChild(document.createTextNode(log + '\n'));
+    };
+
     Speaker.prototype.error = function(err) {
       return this.debuger.error(err);
     };
