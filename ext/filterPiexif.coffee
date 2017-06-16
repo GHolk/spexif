@@ -26,8 +26,9 @@ class FilterPiexif
                 .reduce ((sum, hex, i) -> sum + hex/(60**i)), 0
 
         gps: (exif) ->
+            getOneOfGPS = @oneOfGPS.bind this
             ['GPSLongitude', 'GPSLatitude']
-                .map (key) => @oneOfGPS exif, key
+                .map (key) => getOneOfGPS exif, key
 
     set =
         maker: (exif, maker) -> exif['0th'][piexif.ImageIFD.Make] = maker

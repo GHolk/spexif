@@ -25,14 +25,15 @@ class ImageManager
         url = URL.createObjectURL blob
 
         reader = new FileReader()
-        whenArrayBufferRead = =>
+        theImageList = this
+        whenArrayBufferRead = ->
             image = new CacheImage(
                 url
-                arrayBufferToBinaryString reader.result
+                arrayBufferToBinaryString @result
                 blob
             )
-            @add image
-            @show image
+            theImageList.add image
+            theImageList.show image
 
         reader.onload = whenArrayBufferRead
         reader.readAsArrayBuffer blob
@@ -61,9 +62,8 @@ class ImageManager
         request = new XMLHttpRequest()
         request.open 'GET', url, true
         request.responseType = 'blob'
-        request.onreadystatechange = =>
-            if request.readyState == 4 && request.status == 200
-                @addFromBlob request.response
+        addBlobImageToList = @addFromURL.bind this
+        request.onload = -> addBlobImageToList @response
         request.send ''
 
     getChangedImages: ->
@@ -96,6 +96,30 @@ class ImageManager
                 !(image.exif.date < startDate) &&
                 !(image.exif.date > endDate)
             .forEach selectMethod
+
+    queryDateFromServer: (startDate, endDate) ->
+        url = 'gisquery.php'
+        addURLToList = @addFromURL.bind this
+
+        queryArray = []
+        queryArray.push 'Type=Time'
+
+        addDateQuery = (date, type, array) ->
+            if date
+                pair = type + '=' + date.toISOString().replace(/T.*$/,'')
+                array.push date
+
+        addDateQuery startDate, 'DateFrom', queryArray
+        addDateQuery endDate, 'DateTo', queryArray
+
+        req = new XMLHttpRequest()
+        req.responseType = 'document'
+        req.open 'GET', url + '?' + queryArray.join '&'
+        req.onload = ->
+            imgs = @response.getElementsByTagName 'img'
+            for img in imgs
+                addURLToList img.src
+        req.send()
 
 spexif.imageManager = new ImageManager()
 

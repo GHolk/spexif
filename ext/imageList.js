@@ -43,17 +43,16 @@
     };
 
     ImageManager.prototype.addFromBlob = function(blob) {
-      var reader, url, whenArrayBufferRead;
+      var reader, theImageList, url, whenArrayBufferRead;
       url = URL.createObjectURL(blob);
       reader = new FileReader();
-      whenArrayBufferRead = (function(_this) {
-        return function() {
-          var image;
-          image = new CacheImage(url, arrayBufferToBinaryString(reader.result), blob);
-          _this.add(image);
-          return _this.show(image);
-        };
-      })(this);
+      theImageList = this;
+      whenArrayBufferRead = function() {
+        var image;
+        image = new CacheImage(url, arrayBufferToBinaryString(this.result), blob);
+        theImageList.add(image);
+        return theImageList.show(image);
+      };
       reader.onload = whenArrayBufferRead;
       return reader.readAsArrayBuffer(blob);
     };
@@ -85,17 +84,14 @@
     };
 
     ImageManager.prototype.addFromURL = function(url) {
-      var request;
+      var addBlobImageToList, request;
       request = new XMLHttpRequest();
       request.open('GET', url, true);
       request.responseType = 'blob';
-      request.onreadystatechange = (function(_this) {
-        return function() {
-          if (request.readyState === 4 && request.status === 200) {
-            return _this.addFromBlob(request.response);
-          }
-        };
-      })(this);
+      addBlobImageToList = this.addFromURL.bind(this);
+      request.onload = function() {
+        return addBlobImageToList(this.response);
+      };
       return request.send('');
     };
 
@@ -159,6 +155,37 @@
       return this.list.filter(function(image) {
         return !(image.exif.date < startDate) && !(image.exif.date > endDate);
       }).forEach(selectMethod);
+    };
+
+    ImageManager.prototype.queryDateFromServer = function(startDate, endDate) {
+      var addDateQuery, addURLToList, queryArray, req, url;
+      url = 'gisquery.php';
+      addURLToList = this.addFromURL.bind(this);
+      queryArray = [];
+      queryArray.push('Type=Time');
+      addDateQuery = function(date, type, array) {
+        var pair;
+        if (date) {
+          pair = type + '=' + date.toISOString().replace(/T.*$/, '');
+          return array.push(date);
+        }
+      };
+      addDateQuery(startDate, 'DateFrom', queryArray);
+      addDateQuery(endDate, 'DateTo', queryArray);
+      req = new XMLHttpRequest();
+      req.responseType = 'document';
+      req.open('GET', url + '?' + queryArray.join('&'));
+      req.onload = function() {
+        var i, img, imgs, len, results;
+        imgs = this.response.getElementsByTagName('img');
+        results = [];
+        for (i = 0, len = imgs.length; i < len; i++) {
+          img = imgs[i];
+          results.push(addURLToList(img.src));
+        }
+        return results;
+      };
+      return req.send();
     };
 
     return ImageManager;

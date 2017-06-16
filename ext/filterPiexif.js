@@ -41,9 +41,11 @@
         }), 0);
       },
       gps: function(exif) {
+        var getOneOfGPS;
+        getOneOfGPS = this.oneOfGPS.bind(this);
         return ['GPSLongitude', 'GPSLatitude'].map((function(_this) {
           return function(key) {
-            return _this.oneOfGPS(exif, key);
+            return getOneOfGPS(exif, key);
           };
         })(this));
       }

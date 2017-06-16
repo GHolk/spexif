@@ -59,11 +59,7 @@ document.getElementById 'query-select-image'
             when 'local'
                 spexif.imageManager.selectByDateInterval startDate, endDate
             when 'server'
-                error = new Error 'not implement query from server now.'
-                spexif.speaker.errorFriendly error
-                throw error
-
-
+                spexif.imageManager.queryDateFromServer startDate, endDate
 
 spexif.domHelper = {createInfoNode}
 
