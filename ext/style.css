@@ -24,7 +24,7 @@ form#load-image {
 
 #leaflet-map-container {
     height: 40em;
-    width: 40em;
+    min-width: 50%;
     float: left;
 }
 

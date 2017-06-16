@@ -45,6 +45,7 @@ document.getElementById 'invert-select-image'
 document.getElementById 'query-select-image'
     .onsubmit = (evt) ->
         evt.preventDefault()
+
         checkDate = (dateString) ->
             date = new Date dateString
             if date.valueOf() == NaN
@@ -58,7 +59,11 @@ document.getElementById 'query-select-image'
             when 'local'
                 spexif.imageManager.selectByDateInterval startDate, endDate
             when 'server'
-                throw new Error 'not implement query from server now.'
+                error = new Error 'not implement query from server now.'
+                spexif.speaker.errorFriendly error
+                throw error
+
+
 
 spexif.domHelper = {createInfoNode}
 

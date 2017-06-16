@@ -54,7 +54,7 @@
   };
 
   document.getElementById('query-select-image').onsubmit = function(evt) {
-    var checkDate, endDate, startDate;
+    var checkDate, endDate, error, startDate;
     evt.preventDefault();
     checkDate = function(dateString) {
       var date;
@@ -71,7 +71,9 @@
       case 'local':
         return spexif.imageManager.selectByDateInterval(startDate, endDate);
       case 'server':
-        throw new Error('not implement query from server now.');
+        error = new Error('not implement query from server now.');
+        spexif.speaker.errorFriendly(error);
+        throw error;
     }
   };
 
