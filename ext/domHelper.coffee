@@ -42,25 +42,59 @@ document.getElementById 'clear-select'
 document.getElementById 'invert-select-image'
     .onclick = -> spexif.imageManager.invertSelect()
 
+dateQueryFromServer = (startDate, endDate, callback) ->
+    if typeof callback != 'function'
+        callback = (responseDocument) ->
+            for img in responseDocument.getElementsByTagName 'img'
+                spexif.imageManager.addFromURL img.src
+
+    queryArray = []
+    addDate = (array, date, name) ->
+        if date && date.valueOf()
+            array.push name + '=' + date.toISOString().replace(/T.*$/,'')
+    queryArray.push 'Type=Time'
+    addDate queryArray, startDate, 'DateFrom'
+    addDate queryArray, endDate, 'DateTo'
+
+    queryString
+
+dateEntries =
+    start: 'DateFrom'
+    end: 'DateTo'
+
+queryDateFromServer = (startDate, endDate, url) ->
+    addDate = (name, date, array) ->
+        if date.valueOf()
+            array.push name + '=' + date.toISOString().replace(/T.*$/, '')
+
+    queryArray = []
+    queryArray.push 'Type=Time'
+    addDate dateEntries.start, startDate, queryArray
+    addDate dateEntries.end, endDate, queryArray
+
+    queryString = '?' + queryArray.join '&'
+
+    req = new XMLHttpRequest()
+    req.responseType = 'document'
+    req.open 'GET', url + queryString
+    req.onload = ->
+        for img in @response.getElementsByTagName 'img'
+            spexif.imageManager.addFromURL img.src
+    req.send()
+
+
 document.getElementById 'query-select-image'
     .onsubmit = (evt) ->
         evt.preventDefault()
 
-        structDate = (dateNode) ->
-            date = new Date dateNode.value
-            if date.valueOf() == NaN
-                return null
-            else
-                return {name:dateNode.name,value:date}
+        startDate = new Date @elements[dateEntries.start].value
+        endDate = new Date @elements[dateEntries.end].value
 
-        startDate = structDate @elements['DateFrom']
-        endDate = structDate @elements['DateTo']
         switch @elements['query-from'].value
             when 'local'
                 spexif.imageManager.selectByDate startDate, endDate
             when 'server'
-                spexif.imageManager
-                    .queryDateFromServer startDate, endDate, @action
+                queryDateFromServer startDate, endDate, @action
 
 spexif.domHelper = {createInfoNode}
 

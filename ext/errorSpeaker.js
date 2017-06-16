@@ -8,14 +8,24 @@
       this.boardNode = shower.boardNode;
     }
 
+    Speaker.prototype.errorTemplate = document.getElementById('template').getElementsByClassName('error-log')[0];
+
+    Speaker.prototype.logTemplate = document.getElementById('template').getElementsByClassName('normal-log')[0];
+
     Speaker.prototype.errorFriendly = function(err) {
-      this.boardNode.appendChild(document.createTextNode(err + '\n'));
+      var node;
+      node = this.errorTemplate.cloneNode();
+      node.textContent = err;
+      this.boardNode.appendChild(node);
       this.debuger.error(err);
       return err;
     };
 
     Speaker.prototype.logFriendly = function(log) {
-      return this.boardNode.appendChild(document.createTextNode(log + '\n'));
+      var node;
+      node = this.logTemplate.cloneNode();
+      node.textContent = log;
+      return this.boardNode.appendChild(node);
     };
 
     Speaker.prototype.error = function(err) {

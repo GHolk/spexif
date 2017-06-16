@@ -81,7 +81,8 @@
       oldBlob = this.fullImage.blob;
       this.fullImage = binaryStringToImage64(newImageString, oldBlob.name);
       this.updateHTMLNode();
-      return this.updatePoint();
+      this.updatePoint();
+      return speaker.logFriendly('update image exif.');
     };
 
     CacheImage.prototype.change = null;
@@ -104,12 +105,14 @@
     };
 
     CacheImage.prototype.select = function(tf) {
+      var checkNode;
+      checkNode = this.HTMLNode.getElementsByTagName('input')[0];
       if (tf === true) {
-        return this.HTMLNode.getElementsByTagName('input')[0].checked = true;
+        return checkNode.checked = true;
       } else if (tf === false) {
-        return this.HTMLNode.getElementsByTagName('input')[0].checked = false;
+        return checkNode.checked = false;
       } else {
-        return this.HTMLNode.getElementsByTagName('input')[0].checked;
+        return checkNode.checked;
       }
     };
 

@@ -11,14 +11,15 @@
 <body>
 
 <div id="leaflet-map-container"></div>
-<pre id="error-board">
+<div id="error-board">
 <h2>info</h2>
-</pre>
+</div>
 <div id="image-container">
 <h2>image no gps data</h2>
 </div>
 
-<form id="load-image" action="uploadimage.php" method="post">
+<form id="load-image" action="uploadimage.php" 
+    method="post" enctype="multipart/form-data">
 <input name="m_imagefiles[]" type="file" multiple />
 <input type="submit" value="upload">
 </form>
@@ -29,6 +30,8 @@
         <a target="_blank"><img></a>
         <textarea></textarea>
     </label>
+    <div class="error-log"></div>
+    <div class="normal-log"></div>
 </div>
 
 <div id="tool-bar">
@@ -38,6 +41,7 @@
 </div>
 
 <form id="query-select-image" action="gisquery.php" method="get">
+    <input type="hidden" name="Type" value="Time">
     <label>
         <input name="DateFrom" type="date">
         start date
@@ -69,5 +73,8 @@
 <script src="ext/cacheImage.js"></script>
 <script src="ext/imageList.js"></script>
 <script src="ext/inputFile.js"></script>
+<script>
+    //spexif.imageManager.queryDateFromServer(null, new Date()
+</script>
 </body>
 </html>

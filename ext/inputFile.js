@@ -24,12 +24,13 @@
   fileForm.elements[0].addEventListener('change', whenInputFiles, true);
 
   fileForm.addEventListener('submit', function(evt) {
-    var entryName, formData, imageList, xmlRequest;
+    var fileEntry, formData, imageList, xmlRequest;
     evt.preventDefault();
-    entryName = this.elements[0].name;
+    fileEntry = this.elements[0].name;
     imageList = spexif.imageManager.getSelectedImages();
     if (imageList.length > 0) {
-      formData = new FormData();
+      formData = new FormData(this);
+      formData["delete"](fileEntry);
       imageList.forEach(function(image) {
         return formData.append(entryName, image.fullImage.blob);
       });

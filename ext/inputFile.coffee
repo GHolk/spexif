@@ -18,11 +18,12 @@ fileForm
 fileForm.addEventListener 'submit', (evt) ->
     evt.preventDefault()
 
-    entryName = @elements[0].name
+    fileEntry = @elements[0].name
     imageList = spexif.imageManager.getSelectedImages()
-    
+
     if imageList.length > 0
-        formData = new FormData()
+        formData = new FormData this
+        formData.delete fileEntry
 
         imageList.forEach (image) ->
             formData.append entryName, image.fullImage.blob

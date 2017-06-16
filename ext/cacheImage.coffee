@@ -56,6 +56,7 @@ class CacheImage
         @fullImage = binaryStringToImage64 newImageString, oldBlob.name
         @updateHTMLNode()
         @updatePoint()
+        speaker.logFriendly 'update image exif.'
 
     change: null  # date object at change time if change.
     HTMLNode: null
@@ -64,13 +65,15 @@ class CacheImage
         isChecked = @select() if @HTMLNode
         @HTMLNode = createInfoNode this
         @select isChecked if isChecked
+
     select: (tf) ->
+        checkNode = @HTMLNode.getElementsByTagName('input')[0]
         if tf == true
-            @HTMLNode.getElementsByTagName('input')[0].checked = true
+            checkNode.checked = true
         else if tf == false
-            @HTMLNode.getElementsByTagName('input')[0].checked = false
+            checkNode.checked = false
         else
-            @HTMLNode.getElementsByTagName('input')[0].checked
+            return checkNode.checked
 
 
 spexif.CacheImage = CacheImage
