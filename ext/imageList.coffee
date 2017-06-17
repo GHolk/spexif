@@ -8,9 +8,6 @@ class ImageManager
     add: (cacheImage) ->
         @list.push cacheImage
 
-    remove: (cacheImage) ->
-        @list = @list.filter (image) -> image != cacheImage
-
     constructor: ->
         @list = []
         @map = myMap
@@ -50,20 +47,14 @@ class ImageManager
     showAside: (image) ->
         @asideNode.appendChild image.toHTMLNode()
 
-    removeFromMap: (image) ->
-        @map.removePoint image
-
-    updatePoint: (image) ->
-        @removeFromMap image
-        image.updatePoint()
-        @show image
-
     addFromURL: (url) ->
+        fileName = url.replace /^.*\//, ''
         request = new XMLHttpRequest()
         request.open 'GET', url, true
         request.responseType = 'blob'
         addBlobImageToList = @addFromBlob.bind this
-        request.onload = -> addBlobImageToList @response
+        request.onload = ->
+            addBlobImageToList new File [@response], fileName
         request.send ''
 
     getChangedImages: ->
@@ -97,33 +88,11 @@ class ImageManager
                 !(image.exif.date > endDate)
             .forEach selectMethod
 
-    queryDateFromServer: (startDate, endDate, url) ->
-        addDateStruct = (struct, array) ->
-            if struct
-                struct.value =
-                    struct.value.toISOString().replace(/T.*$/,'')
-            array.push struct
-
-        queryArray = []
-        queryArray.push {name:'Type',value:'Time'}
-        addDateStruct startDate, queryArray
-        addDateStruct endDate, queryArray
-
-        queryString = '?' + queryArray
-            .map (struct) -> "#{struct.name}=#{struct.value}"
-            .join '&'
-
-        req = new XMLHttpRequest()
-        req.responseType = 'document'
-        req.open 'GET', url + queryString
-
-        addURLToList = @addFromURL.bind this
-        req.onload = ->
-            imgs = @response.getElementsByTagName 'img'
-            for img in imgs
-                addURLToList img.src
-        req.send()
-        window.req = req
+    remove: (imageArray = @getSelectedImages()) ->
+        imageArray.forEach (image) -> myMap.removePoint image
+        @list = @list.filter (image) ->
+            imageArray.every (imageInArray) ->
+                imageInArray != image
 
 spexif.imageManager = new ImageManager()
 

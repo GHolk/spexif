@@ -15,12 +15,6 @@
       return this.list.push(cacheImage);
     };
 
-    ImageManager.prototype.remove = function(cacheImage) {
-      return this.list = this.list.filter(function(image) {
-        return image !== cacheImage;
-      });
-    };
-
     function ImageManager() {
       this.list = [];
       this.map = myMap;
@@ -73,24 +67,15 @@
       return this.asideNode.appendChild(image.toHTMLNode());
     };
 
-    ImageManager.prototype.removeFromMap = function(image) {
-      return this.map.removePoint(image);
-    };
-
-    ImageManager.prototype.updatePoint = function(image) {
-      this.removeFromMap(image);
-      image.updatePoint();
-      return this.show(image);
-    };
-
     ImageManager.prototype.addFromURL = function(url) {
-      var addBlobImageToList, request;
+      var addBlobImageToList, fileName, request;
+      fileName = url.replace(/^.*\//, '');
       request = new XMLHttpRequest();
       request.open('GET', url, true);
       request.responseType = 'blob';
       addBlobImageToList = this.addFromBlob.bind(this);
       request.onload = function() {
-        return addBlobImageToList(this.response);
+        return addBlobImageToList(new File([this.response], fileName));
       };
       return request.send('');
     };
@@ -157,40 +142,18 @@
       }).forEach(selectMethod);
     };
 
-    ImageManager.prototype.queryDateFromServer = function(startDate, endDate, url) {
-      var addDateStruct, addURLToList, queryArray, queryString, req;
-      addDateStruct = function(struct, array) {
-        if (struct) {
-          struct.value = struct.value.toISOString().replace(/T.*$/, '');
-        }
-        return array.push(struct);
-      };
-      queryArray = [];
-      queryArray.push({
-        name: 'Type',
-        value: 'Time'
+    ImageManager.prototype.remove = function(imageArray) {
+      if (imageArray == null) {
+        imageArray = this.getSelectedImages();
+      }
+      imageArray.forEach(function(image) {
+        return myMap.removePoint(image);
       });
-      addDateStruct(startDate, queryArray);
-      addDateStruct(endDate, queryArray);
-      queryString = '?' + queryArray.map(function(struct) {
-        return struct.name + "=" + struct.value;
-      }).join('&');
-      req = new XMLHttpRequest();
-      req.responseType = 'document';
-      req.open('GET', url + queryString);
-      addURLToList = this.addFromURL.bind(this);
-      req.onload = function() {
-        var i, img, imgs, len, results;
-        imgs = this.response.getElementsByTagName('img');
-        results = [];
-        for (i = 0, len = imgs.length; i < len; i++) {
-          img = imgs[i];
-          results.push(addURLToList(img.src));
-        }
-        return results;
-      };
-      req.send();
-      return window.req = req;
+      return this.list = this.list.filter(function(image) {
+        return imageArray.every(function(imageInArray) {
+          return imageInArray !== image;
+        });
+      });
     };
 
     return ImageManager;

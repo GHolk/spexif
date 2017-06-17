@@ -51,6 +51,9 @@ class LeafletMap
     removePoint: (image) ->
         image.mapPoint.remove() if image.mapPoint
 
+    updateInfoWindow: (image) ->
+        image.mapPoint.setPopupContent image.HTMLNode
+
 myMap = new LeafletMap()
 spexif.myMap = myMap
 

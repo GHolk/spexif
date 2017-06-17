@@ -81,17 +81,13 @@
       oldBlob = this.fullImage.blob;
       this.fullImage = binaryStringToImage64(newImageString, oldBlob.name);
       this.updateHTMLNode();
-      this.updatePoint();
+      myMap.updateInfoWindow(this);
       return speaker.logFriendly('update image exif.');
     };
 
     CacheImage.prototype.change = null;
 
     CacheImage.prototype.HTMLNode = null;
-
-    CacheImage.prototype.updatePoint = function() {
-      return this.mapPoint.setPopupContent(this.HTMLNode);
-    };
 
     CacheImage.prototype.updateHTMLNode = function() {
       var isChecked;

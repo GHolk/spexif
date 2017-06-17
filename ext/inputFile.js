@@ -32,7 +32,7 @@
       formData = new FormData(this);
       formData["delete"](fileEntry);
       imageList.forEach(function(image) {
-        return formData.append(entryName, image.fullImage.blob);
+        return formData.append(fileEntry, image.fullImage.blob);
       });
       xmlRequest = new XMLHttpRequest();
       xmlRequest.open(this.method.toUpperCase(), this.action);

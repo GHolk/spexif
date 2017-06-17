@@ -20,7 +20,7 @@
     exif.date = exifArray[0], exif.maker = exifArray[1], exif.gps = exifArray[2];
     image.exif.update();
     image.change = new Date();
-    return spexif.imageManager.updatePoint(image);
+    return spexif.myMap.movePoint(image, exifArray[2]);
   };
 
   createInfoNode = function(cacheImage) {
@@ -51,6 +51,10 @@
 
   document.getElementById('invert-select-image').onclick = function() {
     return spexif.imageManager.invertSelect();
+  };
+
+  document.getElementById('remove-select-image').onclick = function() {
+    return spexif.imageManager.remove();
   };
 
   dateQueryFromServer = function(startDate, endDate, callback) {

@@ -61,6 +61,10 @@
       }
     };
 
+    LeafletMap.prototype.updateInfoWindow = function(image) {
+      return image.mapPoint.setPopupContent(image.HTMLNode);
+    };
+
     return LeafletMap;
 
   })();

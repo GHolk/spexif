@@ -55,12 +55,11 @@ class CacheImage
         oldBlob = @fullImage.blob
         @fullImage = binaryStringToImage64 newImageString, oldBlob.name
         @updateHTMLNode()
-        @updatePoint()
+        myMap.updateInfoWindow this
         speaker.logFriendly 'update image exif.'
 
     change: null  # date object at change time if change.
     HTMLNode: null
-    updatePoint: -> @mapPoint.setPopupContent @HTMLNode
     updateHTMLNode: ->
         isChecked = @select() if @HTMLNode
         @HTMLNode = createInfoNode this

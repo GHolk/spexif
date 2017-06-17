@@ -15,7 +15,7 @@ updateExif = (image, text) ->
     [exif.date, exif.maker, exif.gps] = exifArray
     image.exif.update()
     image.change = new Date()
-    spexif.imageManager.updatePoint image
+    spexif.myMap.movePoint image, exifArray[2]
 
 createInfoNode = (cacheImage) ->
     newNode = template.cloneNode true
@@ -42,6 +42,9 @@ document.getElementById 'clear-select'
 document.getElementById 'invert-select-image'
     .onclick = -> spexif.imageManager.invertSelect()
 
+document.getElementById 'remove-select-image'
+    .onclick = -> spexif.imageManager.remove()
+
 dateQueryFromServer = (startDate, endDate, callback) ->
     if typeof callback != 'function'
         callback = (responseDocument) ->
@@ -58,6 +61,9 @@ dateQueryFromServer = (startDate, endDate, callback) ->
 
     queryString
 
+# dirty code..., I dont know how write pretty.
+# query need form name, but pass form name as argument ugly,
+# hard code even more ugly.
 dateEntries =
     start: 'DateFrom'
     end: 'DateTo'

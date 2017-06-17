@@ -1,0 +1,71 @@
+
+
+form#load-image {
+    position: fixed;
+    bottom: 1ex;
+    left: 1ex;
+    padding: 1ex;
+    background-color: white;
+    z-index: 1;
+}
+
+#image-container img {
+    height: 10em;
+}
+
+#image-container .image-info {
+    float: left;
+    padding: 1ex;
+}
+
+#image-container {
+    float: left;
+    border: solid 0.2em;
+}
+
+#leaflet-map-container {
+    height: 40em;
+    min-width: 50%;
+    float: left;
+}
+
+.image-info {
+    padding: 0.2em;
+}
+
+#image-container .image-info {
+    margin: 0.5em;
+    border: solid 1px;
+}
+
+.image-info img {
+    width: 10em;
+    display: block;
+}
+
+.image-info textarea {
+    display: block;
+    white-space: pre-wrap;
+    width: 10em;
+    height: 5em;
+    word-break: break-all;
+}
+
+.image-info input {
+    display: block;
+    text-align: right;
+}
+
+#error-board {
+    float: left;
+    border: solid 0.2em;
+    margin: 1ex;
+    padding: 1ex;
+}
+#error-board .error-log {
+    color: red;
+}
+#error-board .normal-log {
+    color: blue;
+}
+

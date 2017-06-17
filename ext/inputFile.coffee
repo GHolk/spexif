@@ -26,7 +26,7 @@ fileForm.addEventListener 'submit', (evt) ->
         formData.delete fileEntry
 
         imageList.forEach (image) ->
-            formData.append entryName, image.fullImage.blob
+            formData.append fileEntry, image.fullImage.blob
 
         xmlRequest = new XMLHttpRequest()
         xmlRequest.open @method.toUpperCase(), @action
