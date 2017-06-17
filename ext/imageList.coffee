@@ -2,6 +2,7 @@
 myMap = spexif.myMap
 CacheImage = spexif.CacheImage
 getSelectedImages = spexif.domHelper.getSelectedImages
+speaker = spexif.speaker
 
 
 class ImageManager
@@ -23,7 +24,7 @@ class ImageManager
 
         reader = new FileReader()
         theImageList = this
-        whenArrayBufferRead = ->
+        reader.onload = ->
             image = new CacheImage(
                 url
                 arrayBufferToBinaryString @result
@@ -32,7 +33,6 @@ class ImageManager
             theImageList.add image
             theImageList.show image
 
-        reader.onload = whenArrayBufferRead
         reader.readAsArrayBuffer blob
 
     show: (image) ->
@@ -47,15 +47,31 @@ class ImageManager
     showAside: (image) ->
         @asideNode.appendChild image.toHTMLNode()
 
+    changeImageNameInServer: []
+
     addFromURL: (url) ->
-        fileName = url.replace /^.*\//, ''
+        fileName = decodeURIComponent url.replace /^.*\//, ''
         request = new XMLHttpRequest()
-        request.open 'GET', url, true
+        request.open 'GET', url
+        if (@changeImageNameInServer.some (name) -> name == fileName)
+            request.setRequestHeader 'Cache-Control', 'no-cache'
+            @changeImageNameInServer =
+                @changeImageNameInServer.filter (name) -> name != fileName
         request.responseType = 'blob'
         addBlobImageToList = @addFromBlob.bind this
+
         request.onload = ->
             addBlobImageToList new File [@response], fileName
-        request.send ''
+
+        theImageNameList = @changeImageNameInServer
+        request.onerror = ->
+            theImageNameList.push fileName
+            speaker.errorFriendly(
+                new Error "can not load image #{fileName} from server."
+            )
+            speaker.error new Error "can not load #{url}"
+
+        request.send()
 
     getChangedImages: ->
         @list.filter (cacheImage) -> cacheImage.change
@@ -91,8 +107,8 @@ class ImageManager
     remove: (imageArray = @getSelectedImages()) ->
         imageArray.forEach (image) -> myMap.removePoint image
         @list = @list.filter (image) ->
-            imageArray.every (imageInArray) ->
-                imageInArray != image
+            ! imageArray.some (imageInput) ->
+                imageInput == image
 
 spexif.imageManager = new ImageManager()
 
