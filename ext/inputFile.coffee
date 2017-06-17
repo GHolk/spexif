@@ -25,13 +25,19 @@ fileForm.addEventListener 'submit', (evt) ->
         formData = new FormData this
         formData.delete fileEntry
 
-        imageList.forEach (image) ->
+        for image in imageList
             formData.append fileEntry, image.fullImage.blob
 
         xmlRequest = new XMLHttpRequest()
         xmlRequest.open @method.toUpperCase(), @action
         xmlRequest.onload = ->
-            speaker.logFriendly 'successful upload selected image!'
+            speaker.logFriendly 'successful upload selected image.'
+            for image in imageList
+                imageManager.changeImageNameInServer.push(
+                    image.fullImage.blob.name
+                )
+        xmlRequest.onerror = ->
+            speaker.errorFriendly new Error 'can not upload selected image!'
         xmlRequest.send formData
 
     else
