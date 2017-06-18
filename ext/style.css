@@ -1,4 +1,27 @@
+h2 {
+    margin: 0.3em;
+}
 
+label {
+    display: block;
+}
+
+form {
+    border: solid 1px;
+    margin: 1em;
+    float: right;
+    padding: 0.5em;
+}
+
+#right-part {
+    float: right;
+    width: 45%;
+}
+
+#tool-bar {
+    margin: 1em;
+    float: right;
+}
 
 form#load-image {
     position: fixed;
@@ -14,12 +37,10 @@ form#load-image {
 }
 
 #image-container .image-info {
-    float: left;
     padding: 1ex;
 }
 
 #image-container {
-    float: left;
     border: solid 0.2em;
 }
 
@@ -69,3 +90,6 @@ form#load-image {
     color: blue;
 }
 
+#template {
+    display: none;
+}
