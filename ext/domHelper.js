@@ -116,7 +116,7 @@
     return req.send();
   };
 
-  document.getElementById('query-select-image').onsubmit = function(evt) {
+  document.getElementById('date-query').onsubmit = function(evt) {
     var endDate, startDate;
     evt.preventDefault();
     startDate = new Date(this.elements[dateEntries.start].value);

@@ -89,7 +89,7 @@ queryDateFromServer = (startDate, endDate, url) ->
     req.send()
 
 
-document.getElementById 'query-select-image'
+document.getElementById 'date-query'
     .onsubmit = (evt) ->
         evt.preventDefault()
 
