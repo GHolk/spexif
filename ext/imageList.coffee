@@ -110,5 +110,11 @@ class ImageManager
             ! imageArray.some (imageInput) ->
                 imageInput == image
 
+    selectByCircle: (gps, radius) ->
+        @list
+            .filter (image) ->
+                radius >= myMap.distanceBetweenPoint gps, image.mapPoint
+            .forEach (image) -> image.select true
+
 spexif.imageManager = new ImageManager()
 

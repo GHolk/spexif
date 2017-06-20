@@ -173,6 +173,14 @@
       });
     };
 
+    ImageManager.prototype.selectByCircle = function(gps, radius) {
+      return this.list.filter(function(image) {
+        return radius >= myMap.distanceBetweenPoint(gps, image.mapPoint);
+      }).forEach(function(image) {
+        return image.select(true);
+      });
+    };
+
     return ImageManager;
 
   })();
