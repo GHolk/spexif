@@ -54,12 +54,12 @@ save modified image, then can be downloaded. (will not upload to server.)
     <input type="hidden" name="Type" value="Time">
     <div>
     <label>
+        start date:
         <input name="DateFrom" type="date" placeholder="1999-12-31">
-        start date
     </label>
     <label>
+        end date:
         <input name="DateTo" type="date" placeholder="2048-01-01">
-        end date
     </label>
     </div>
     <div>
@@ -79,20 +79,17 @@ save modified image, then can be downloaded. (will not upload to server.)
     <h2>query by circle</h2>
     <input type="hidden" name="Type" value="Distance">
     <div>
-        <h3>center</h3>
         <label>
-            longitude
-            <input name="Lon" type="number" placeholder="121">
+            longitude:
+            <input name="Lon" type="number" placeholder="121"> &deg;
         </label>
         <label>
-            latitude
-            <input name="Lat" type="number" placeholder="23">
+            latitude:
+            <input name="Lat" type="number" placeholder="23"> &deg;
         </label>
-    </div>
-    <div>
         <label>
-            radius
-            <input name="Dist" type="number" placeholder="300">
+            radius:
+            <input name="Dist" type="number" placeholder="300"> m
         </label>
     </div>
     <button id="visual-circle">visual select</button>

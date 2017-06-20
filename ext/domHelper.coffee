@@ -102,5 +102,48 @@ document.getElementById 'date-query'
             when 'server'
                 queryDateFromServer startDate, endDate, @action
 
+circle =
+    latitude: 'Lat'
+    longitude: 'Lon'
+    radius: 'Dist'
+
+queryCircleFromServer = (gps, radius, url) ->
+    addGpsDegree = (type, degree, array) ->
+        array.push type + '=' + degree
+
+    queryArray = []
+    queryArray.push 'Type=Distance'
+    queryArray.push 'Dist=' + radius
+    addGpsDegree circle.longitude, gps[0], queryArray
+    addGpsDegree circle.latitude, gps[1], queryArray
+
+    queryString = '?' + queryArray.join '&'
+
+    req = new XMLHttpRequest()
+    req.responseType = 'document'
+    req.open 'GET', url + queryString
+    req.onload = ->
+        for img in @response.getElementsByTagName 'img'
+            spexif.imageManager.addFromURL img.src
+    req.send()
+
+
+document.getElementById 'circle-query'
+    .onsubmit = (evt) ->
+        evt.preventDefault()
+
+        gps = [
+            @elements[circle.longitude]
+            @elements[circle.latitude]
+        ].map (node) -> Number node.value
+
+        radius = (Number @elements[circle.radius].value) / 1000
+
+        switch @elements['query-from'].value
+            when 'local'
+                spexif.imageManager.selectByCircle gps, radius
+            when 'server'
+                queryCircleFromServer gps, radius, @action
+
 spexif.domHelper = {createInfoNode}
 
