@@ -145,5 +145,14 @@ document.getElementById 'circle-query'
             when 'server'
                 queryCircleFromServer gps, radius, @action
 
-spexif.domHelper = {createInfoNode}
+document.getElementById 'visual-circle'
+    .onclick = ->
+        formElements = @form.elements
+        spexif.myMap.drawCircle (center, radius) ->
+            formElements[circle.longitude].value = center[0]
+            formElements[circle.latitude].value = center[1]
+            formElements[circle.radius].value = radius
+
+
+spexif.domHelper = {createInfoNode,queryCircleFromServer}
 

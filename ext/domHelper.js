@@ -177,8 +177,19 @@
     }
   };
 
+  document.getElementById('visual-circle').onclick = function() {
+    var formElements;
+    formElements = this.form.elements;
+    return spexif.myMap.drawCircle(function(center, radius) {
+      formElements[circle.longitude].value = center[0];
+      formElements[circle.latitude].value = center[1];
+      return formElements[circle.radius].value = radius;
+    });
+  };
+
   spexif.domHelper = {
-    createInfoNode: createInfoNode
+    createInfoNode: createInfoNode,
+    queryCircleFromServer: queryCircleFromServer
   };
 
 }).call(this);

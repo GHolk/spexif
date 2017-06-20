@@ -54,6 +54,30 @@ class LeafletMap
     updateInfoWindow: (image) ->
         image.mapPoint.setPopupContent image.HTMLNode
 
+    distanceBetweenPoint: (gps1, gps2) ->
+        @map.distance gps1, gps2
+
+    drawCircle: (callback) ->
+        @map.once 'click', (evt) =>
+            circle = L.circle evt.latlng
+            circle.addTo @map
+
+            whenMove = (evt) =>
+                radius =
+                    @distanceBetweenPoint circle.getLatLng(), evt.latlng
+                circle.setRadius radius
+
+            @map.on 'mousemove', whenMove
+            @map.once 'click', (evt) =>
+                @map.off 'mousemove', whenMove
+                whenMove evt
+                latlng = circle.getLatLng()
+                gps = [latlng.lng, latlng.lat]
+                radius = circle.getRadius()
+
+                setTimeout ( -> circle.remove()), 10000
+                callback gps, radius
+
 myMap = new LeafletMap()
 spexif.myMap = myMap
 

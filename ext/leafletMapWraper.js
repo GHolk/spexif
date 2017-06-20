@@ -65,6 +65,38 @@
       return image.mapPoint.setPopupContent(image.HTMLNode);
     };
 
+    LeafletMap.prototype.distanceBetweenPoint = function(gps1, gps2) {
+      return this.map.distance(gps1, gps2);
+    };
+
+    LeafletMap.prototype.drawCircle = function(callback) {
+      return this.map.once('click', (function(_this) {
+        return function(evt) {
+          var circle, whenMove;
+          circle = L.circle(evt.latlng);
+          circle.addTo(_this.map);
+          whenMove = function(evt) {
+            var radius;
+            radius = _this.distanceBetweenPoint(circle.getLatLng(), evt.latlng);
+            return circle.setRadius(radius);
+          };
+          _this.map.on('mousemove', whenMove);
+          return _this.map.once('click', function(evt) {
+            var gps, latlng, radius;
+            _this.map.off('mousemove', whenMove);
+            whenMove(evt);
+            latlng = circle.getLatLng();
+            gps = [latlng.lng, latlng.lat];
+            radius = circle.getRadius();
+            setTimeout((function() {
+              return circle.remove();
+            }), 10000);
+            return callback(gps, radius);
+          });
+        };
+      })(this));
+    };
+
     return LeafletMap;
 
   })();
