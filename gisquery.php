@@ -1,4 +1,7 @@
 <?php
+    function check_number ($number_string) {
+        return is_numeric($number_string);
+    }
 	if(isset($_GET["Type"]))
 	{
 		//檢查使用者有無登入
@@ -16,9 +19,9 @@
 			$Lat = $_GET["Lat"] ;
 			$Dist = $_GET["Dist"] ;
 	
-			if(!preg_match("/^\d{1,3}(\.\d{1,6})?$/", $Lon) || 
-			!preg_match("/^\d{1,2}(\.\d{1,6})?$/", $Lat) ||
-			!preg_match("/^\d{1,5}(\.\d{1,3})?$/", $Dist))
+			if(check_number($Lon) || 
+			check_number($Lat) ||
+			check_number($Dist))
 			{
 				$mysqli->close() ;
 				die("距離參數格式錯誤") ;
@@ -61,10 +64,10 @@
 			$LatFrom = $_GET["LatFrom"] ;
 			$LatTo = $_GET["LatTo"] ;
 			
-			if(!preg_match("/^\d{1,3}(\.\d{1,6})?$/", $LonFrom) || 
-			!preg_match("/^\d{1,3}(\.\d{1,6})?$/", $LonTo) ||
-			!preg_match("/^\d{1,2}(\.\d{1,6})?$/", $LatFrom) ||
-			!preg_match("/^\d{1,2}(\.\d{1,6})?$/", $LatTo))
+			if(check_number($LonFrom) || 
+			check_number($LonTo) ||
+			check_number($LatFrom) ||
+			check_number($LatTo))
 			{
 				$mysqli->close() ;
 				die("經緯度參數格式錯誤") ;
