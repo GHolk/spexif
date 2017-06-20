@@ -12,30 +12,6 @@
 
 <div id="leaflet-map-container"></div>
 
-<div id="error-board">
-<h2>info</h2>
-</div>
-<div id="image-container">
-<h2>image no gps data</h2>
-</div>
-
-<form id="load-image" action="uploadimage.php" 
-    method="post" enctype="multipart/form-data">
-<h2>load photo</h2>
-<input name="m_imagefiles[]" type="file" multiple />
-<input type="submit" value="upload">
-</form>
-
-<div id="template">
-    <label class="image-template">
-        <input name="select-image[]" type="checkbox">
-        <a target="_blank"><img></a>
-        <textarea></textarea>
-    </label>
-    <div class="error-log"></div>
-    <div class="normal-log"></div>
-</div>
-
 <div id="tool-bar">
     <button id="update-image-binary" title="
 save modified image, then can be downloaded. (will not upload to server.)
@@ -49,7 +25,7 @@ save modified image, then can be downloaded. (will not upload to server.)
     <a href="login.php" target="_blank"><button>login</button></a>
 </div>
 
-<form id="date-query" action="gisquery.php" method="get">
+<form class="query" id="date-query" action="gisquery.php" method="get">
     <h2>query by date</h2>
     <input type="hidden" name="Type" value="Time">
     <div>
@@ -75,7 +51,7 @@ save modified image, then can be downloaded. (will not upload to server.)
     <input type="submit" value="query">
 </form>
 
-<form id="circle-query" action="gisquery.php" method="get">
+<form class="query" id="circle-query" action="gisquery.php" method="get">
     <h2>query by circle</h2>
     <input type="hidden" name="Type" value="Distance">
     <div>
@@ -95,7 +71,7 @@ save modified image, then can be downloaded. (will not upload to server.)
                 type="number" step="any" placeholder="300"> m
         </label>
     </div>
-    <button id="visual-circle">visual select</button>
+    <button id="visual-circle">draw circle</button>
     <div>
         <label>
             <input type="radio" name="query-from" value="local" checked>
@@ -108,6 +84,31 @@ save modified image, then can be downloaded. (will not upload to server.)
     </div>
     <input type="submit" value="query">
 </form>
+
+<div id="image-container">
+<h2>image no gps data</h2>
+</div>
+
+<div id="error-board">
+<h2>info</h2>
+</div>
+
+<form id="load-image" action="uploadimage.php" 
+    method="post" enctype="multipart/form-data">
+<h2>load photo</h2>
+<input name="m_imagefiles[]" type="file" multiple />
+<input type="submit" value="upload">
+</form>
+
+<div id="template">
+    <label class="image-template">
+        <input name="select-image[]" type="checkbox">
+        <a target="_blank"><img></a>
+        <textarea></textarea>
+    </label>
+    <div class="error-log"></div>
+    <div class="normal-log"></div>
+</div>
 
 <script> window.spexif = {} </script>
 <script src="ext/leafletMapWraper.js"></script>
