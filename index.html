@@ -38,17 +38,15 @@
 
 <div id="tool-bar">
     <button id="update-image-binary" title="
-        save modified image, then can be downloaded.
-        (will not upload to server.)">
-        save change
-    </button>
+save modified image, then can be downloaded. (will not upload to server.)
+">save change</button>
     <button id="invert-select-image">invert select</button>
     <button id="clear-select">clear select</button>
     <button id="remove-select-image"
         title="remove in local, not server.">
         remove select image
     </button>
-    <button><a href="login.php" target="_blank">login</a></button>
+    <a href="login.php" target="_blank"><button>login</button></a>
 </div>
 
 <form id="query-select-image" action="gisquery.php" method="get">
@@ -56,11 +54,11 @@
     <input type="hidden" name="Type" value="Time">
     <div>
     <label>
-        <input name="DateFrom" type="date">
+        <input name="DateFrom" type="date" placeholder="1999-12-31">
         start date
     </label>
     <label>
-        <input name="DateTo" type="date">
+        <input name="DateTo" type="date" placeholder="2048-01-01">
         end date
     </label>
     </div>
