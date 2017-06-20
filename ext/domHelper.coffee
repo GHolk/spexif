@@ -108,6 +108,7 @@ circle =
     radius: 'Dist'
 
 queryCircleFromServer = (gps, radius, url) ->
+    radius /= 1000  # server unit set in kilometer
     addGpsDegree = (type, degree, array) ->
         array.push type + '=' + degree
 
@@ -137,7 +138,7 @@ document.getElementById 'circle-query'
             @elements[circle.latitude]
         ].map (node) -> Number node.value
 
-        radius = (Number @elements[circle.radius].value) / 1000
+        radius = Number @elements[circle.radius].value
 
         switch @elements['query-from'].value
             when 'local'
@@ -146,7 +147,9 @@ document.getElementById 'circle-query'
                 queryCircleFromServer gps, radius, @action
 
 document.getElementById 'visual-circle'
-    .onclick = ->
+    .onclick = (evt) ->
+        evt.preventDefault()
+
         formElements = @form.elements
         spexif.myMap.drawCircle (center, radius) ->
             formElements[circle.longitude].value = center[0]

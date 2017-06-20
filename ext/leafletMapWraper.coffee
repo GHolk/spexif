@@ -55,6 +55,8 @@ class LeafletMap
         image.mapPoint.setPopupContent image.HTMLNode
 
     distanceBetweenPoint: (gps1, gps2) ->
+        if typeof gps2.getLatLng == 'function'
+            gps2 = gps2.getLatLng()
         @map.distance gps1, gps2
 
     drawCircle: (callback) ->

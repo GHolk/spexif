@@ -66,6 +66,9 @@
     };
 
     LeafletMap.prototype.distanceBetweenPoint = function(gps1, gps2) {
+      if (typeof gps2.getLatLng === 'function') {
+        gps2 = gps2.getLatLng();
+      }
       return this.map.distance(gps1, gps2);
     };
 

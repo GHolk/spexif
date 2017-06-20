@@ -174,8 +174,10 @@
     };
 
     ImageManager.prototype.selectByCircle = function(gps, radius) {
+      var latlng;
+      latlng = gps.slice().reverse();
       return this.list.filter(function(image) {
-        return radius >= myMap.distanceBetweenPoint(gps, image.mapPoint);
+        return radius >= myMap.distanceBetweenPoint(latlng, image.mapPoint);
       }).forEach(function(image) {
         return image.select(true);
       });

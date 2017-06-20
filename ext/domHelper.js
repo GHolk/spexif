@@ -137,6 +137,7 @@
 
   queryCircleFromServer = function(gps, radius, url) {
     var addGpsDegree, queryArray, queryString, req;
+    radius /= 1000;
     addGpsDegree = function(type, degree, array) {
       return array.push(type + '=' + degree);
     };
@@ -168,7 +169,7 @@
     gps = [this.elements[circle.longitude], this.elements[circle.latitude]].map(function(node) {
       return Number(node.value);
     });
-    radius = (Number(this.elements[circle.radius].value)) / 1000;
+    radius = Number(this.elements[circle.radius].value);
     switch (this.elements['query-from'].value) {
       case 'local':
         return spexif.imageManager.selectByCircle(gps, radius);
@@ -177,8 +178,9 @@
     }
   };
 
-  document.getElementById('visual-circle').onclick = function() {
+  document.getElementById('visual-circle').onclick = function(evt) {
     var formElements;
+    evt.preventDefault();
     formElements = this.form.elements;
     return spexif.myMap.drawCircle(function(center, radius) {
       formElements[circle.longitude].value = center[0];

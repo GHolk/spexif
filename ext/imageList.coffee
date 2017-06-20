@@ -111,9 +111,10 @@ class ImageManager
                 imageInput == image
 
     selectByCircle: (gps, radius) ->
+        latlng = gps.slice().reverse()
         @list
             .filter (image) ->
-                radius >= myMap.distanceBetweenPoint gps, image.mapPoint
+                radius >= myMap.distanceBetweenPoint latlng, image.mapPoint
             .forEach (image) -> image.select true
 
 spexif.imageManager = new ImageManager()
