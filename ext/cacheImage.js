@@ -66,11 +66,6 @@
     function CacheImage(url, data, blob) {
       this.fullImage = new Image64(url, data, blob);
       this.exif = createEXIF(data);
-      if (this.exif.thumbnail) {
-        this.thumbnailImage = new Image64('', this.exif.thumbnail);
-      } else {
-        this.thumbnailImage = this.fullImage;
-      }
       this.updateHTMLNode();
       this.mapPoint = createPoint(this);
     }

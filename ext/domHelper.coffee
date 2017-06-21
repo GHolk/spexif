@@ -19,9 +19,7 @@ updateExif = (image, text) ->
 
 createInfoNode = (cacheImage) ->
     newNode = template.cloneNode true
-    newNode.getElementsByTagName('img')[0].src =
-        cacheImage.thumbnailImage.url
-    newNode.getElementsByTagName('a')[0].href = cacheImage.fullImage.url
+    newNode.getElementsByTagName('img')[0].src = cacheImage.fullImage.url
 
     exif = cacheImage.exif
     trim = (s) -> String(s).trim()
@@ -139,7 +137,6 @@ document.getElementById 'visual-circle'
             formElements[circle.longitude].value = center[0]
             formElements[circle.latitude].value = center[1]
             formElements[circle.radius].value = radius
-
 
 spexif.domHelper = {createInfoNode,queryCircleFromServer}
 

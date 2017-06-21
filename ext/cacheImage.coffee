@@ -40,10 +40,6 @@ class CacheImage
     constructor: (url, data, blob) ->
         @fullImage = new Image64 url, data, blob
         @exif = createEXIF data
-        if @exif.thumbnail
-            @thumbnailImage = new Image64 '', @exif.thumbnail
-        else
-            @thumbnailImage = @fullImage
         @updateHTMLNode()
         @mapPoint = createPoint this
 

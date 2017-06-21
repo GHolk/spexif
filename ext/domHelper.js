@@ -26,8 +26,7 @@
   createInfoNode = function(cacheImage) {
     var exif, newNode, textarea, trim;
     newNode = template.cloneNode(true);
-    newNode.getElementsByTagName('img')[0].src = cacheImage.thumbnailImage.url;
-    newNode.getElementsByTagName('a')[0].href = cacheImage.fullImage.url;
+    newNode.getElementsByTagName('img')[0].src = cacheImage.fullImage.url;
     exif = cacheImage.exif;
     trim = function(s) {
       return String(s).trim();
