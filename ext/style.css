@@ -2,7 +2,7 @@ h2 {
     margin: 0.3em;
 }
 
-button {
+#tool-bar button {
     font-size: larger;
 }
 
@@ -43,6 +43,12 @@ form {
     margin: 2%;
 }
 
+#load-image {
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+}
+
 #image-container {
     display: none;
 }
@@ -58,6 +64,9 @@ form {
 }
 
 #error-board {
+    position: absolute;
+    top: 2%;
+    left: 2%;
     height: 20em;
     overflow: auto;
     border: solid 1px;
@@ -76,7 +85,7 @@ form {
 
 #leaflet-map-container {
     position: absolute;
-    z-index: -1;
+    z-index: -2;
     height: 100%;
     width: 100%;
     margin: 0;
