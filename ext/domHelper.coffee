@@ -45,22 +45,6 @@ document.getElementById 'invert-select-image'
 document.getElementById 'remove-select-image'
     .onclick = -> spexif.imageManager.remove()
 
-dateQueryFromServer = (startDate, endDate, callback) ->
-    if typeof callback != 'function'
-        callback = (responseDocument) ->
-            for img in responseDocument.getElementsByTagName 'img'
-                spexif.imageManager.addFromURL img.src
-
-    queryArray = []
-    addDate = (array, date, name) ->
-        if date && date.valueOf()
-            array.push name + '=' + date.toISOString().replace(/T.*$/,'')
-    queryArray.push 'Type=Time'
-    addDate queryArray, startDate, 'DateFrom'
-    addDate queryArray, endDate, 'DateTo'
-
-    queryString
-
 # dirty code..., I dont know how write pretty.
 # query need form name, but pass form name as argument ugly,
 # hard code even more ugly.
