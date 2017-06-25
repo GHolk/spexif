@@ -19,11 +19,18 @@ class FilterPiexif
             exifDateToDateObject exif.Exif[piexif.ExifIFD.DateTimeOriginal]
         oneOfGPS: (exif, key) ->
             dms = exif.GPS[ piexif.GPSIFD[key] ]
-            ratio = 1
-            decimal = 0
-            dms
+            orient = exif.GPS[ piexif.GPSIFD["#{key}Ref"] ]
+            decimalDegree = dms
                 .map (part) -> part[0] / part[1]
                 .reduce ((sum, hex, i) -> sum + hex/(60**i)), 0
+
+            switch orient
+                when 'N', 'E'
+                    return decimalDegree
+                when 'S', 'W'
+                    return -decimalDegree
+                else
+                    return decimalDegree
 
         gps: (exif) ->
             getOneOfGPS = @oneOfGPS.bind this
@@ -39,13 +46,23 @@ class FilterPiexif
         oneOfGPS: (exif, key, dmsText) ->
             toInt = (f) -> Math.floor f
             toFrac = (f, i) -> [(toInt f*i), i]
-            exif.GPS[ piexif.GPSIFD[key] ] = do (dmsText) ->
-                float = Number dmsText
+            gpsArray = do (dmsText) ->
+                float = Math.abs Number dmsText
                 return [
                     toFrac float, 1
                     toFrac float*60%60, 1
                     toFrac float*60*60%60, 10000
                 ]
+            exif.GPS[ piexif.GPSIFD[key] ] = gpsArray
+            exif.GPS[ piexif.GPSIFD["#{key}Ref"] ] = switch
+                when Number dmsText >= 0
+                    if key == 'GPSLongitude' then 'E'
+                    else 'N'
+                else # Number dmsText < 0
+                    if key == 'GPSLongitude' then 'W'
+                    else 'S'
+
+
         gps: (exif, dms) ->
             dms = dms.split ',' if typeof dms == 'string'
             ['GPSLongitude','GPSLatitude'].forEach (key, i) ->

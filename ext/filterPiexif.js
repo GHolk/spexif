@@ -30,15 +30,24 @@
         return exifDateToDateObject(exif.Exif[piexif.ExifIFD.DateTimeOriginal]);
       },
       oneOfGPS: function(exif, key) {
-        var decimal, dms, ratio;
+        var decimalDegree, dms, orient;
         dms = exif.GPS[piexif.GPSIFD[key]];
-        ratio = 1;
-        decimal = 0;
-        return dms.map(function(part) {
+        orient = exif.GPS[piexif.GPSIFD[key + "Ref"]];
+        decimalDegree = dms.map(function(part) {
           return part[0] / part[1];
         }).reduce((function(sum, hex, i) {
           return sum + hex / (Math.pow(60, i));
         }), 0);
+        switch (orient) {
+          case 'N':
+          case 'E':
+            return decimalDegree;
+          case 'S':
+          case 'W':
+            return -decimalDegree;
+          default:
+            return decimalDegree;
+        }
       },
       gps: function(exif) {
         var getOneOfGPS;
@@ -59,18 +68,36 @@
         return exif.Exif[piexif.ExifIFD.DateTimeOriginal] = dateObjectToExifDate(date);
       },
       oneOfGPS: function(exif, key, dmsText) {
-        var toFrac, toInt;
+        var gpsArray, toFrac, toInt;
         toInt = function(f) {
           return Math.floor(f);
         };
         toFrac = function(f, i) {
           return [toInt(f * i), i];
         };
-        return exif.GPS[piexif.GPSIFD[key]] = (function(dmsText) {
+        gpsArray = (function(dmsText) {
           var float;
-          float = Number(dmsText);
+          float = Math.abs(Number(dmsText));
           return [toFrac(float, 1), toFrac(float * 60 % 60, 1), toFrac(float * 60 * 60 % 60, 10000)];
         })(dmsText);
+        exif.GPS[piexif.GPSIFD[key]] = gpsArray;
+        return exif.GPS[piexif.GPSIFD[key + "Ref"]] = (function() {
+          switch (false) {
+            case !Number(dmsText >= 0):
+              if (key === 'GPSLongitude') {
+                return 'E';
+              } else {
+                return 'N';
+              }
+              break;
+            default:
+              if (key === 'GPSLongitude') {
+                return 'W';
+              } else {
+                return 'S';
+              }
+          }
+        })();
       },
       gps: function(exif, dms) {
         if (typeof dms === 'string') {
