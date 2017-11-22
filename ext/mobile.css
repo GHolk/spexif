@@ -1,0 +1,36 @@
+
+body {
+    font-size: 30px
+}
+
+button, input {
+    font-size: 30px;
+    padding: 0 0;
+    border-width: 1px;
+}
+
+#date-query, #circle-query {
+    width: 40%;
+    position: relative;
+    left: 30%;
+}
+#date-query:hover, #circle-query:hover {
+    left: 0;
+}
+
+input[type=date], input[type=number] {
+    max-width: 90%;
+}
+
+#error-board {
+    top: 5em;
+    height: 10em;
+}
+
+#tool-bar button {
+    line-height: 2em;
+}
+
+#load-image {
+    overflow: hidden;
+}
