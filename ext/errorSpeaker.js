@@ -7,8 +7,10 @@
       this.debuger = shower.debuger;
       this.boardNode = shower.boardNode;
       this.boardNode.querySelector('iframe').addEventListener('load', (function(_this) {
-        return function() {
-          return _this.showWindow(true);
+        return function(loadEvent) {
+          if (loadEvent.target.contentWindow.location.href !== 'about:blank') {
+            return _this.showWindow(true);
+          }
         };
       })(this));
       this.boardNode.querySelector('button').addEventListener('click', (function(_this) {

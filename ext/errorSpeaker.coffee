@@ -3,15 +3,11 @@ class Speaker
     constructor: (shower) ->
         @debuger = shower.debuger
         @boardNode = shower.boardNode
-        # @boardNode
-        #     .querySelector 'iframe'
-        #     .addEventListener(
-        #         'load'
-        #         => this.iframe.addEventListener 'load', => this.showWindow true
-        #         {once: true}
-        #     )
         @boardNode.querySelector 'iframe'
-            .addEventListener 'load', => this.showWindow true
+            .addEventListener 'load', (loadEvent) =>
+                # check is not first load event
+                if loadEvent.target.contentWindow.location.href != 'about:blank'
+                    this.showWindow true
         @boardNode.querySelector 'button'
             .addEventListener 'click', => this.showWindow false
 
