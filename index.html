@@ -34,9 +34,9 @@ save modified image, then can be downloaded. (will not upload to server.)
         title="remove in local, not server.">
         remove select image
     </button>
-    <a href="login.php" target="_blank"><button>login</button></a>
-    <a href="logout.php" target="_blank"><button>logout</button></a>
-    <a href="doc/report.html" target="_blank"><button>about</button></a>
+    <a href="login.php" target="info-window"><button>login</button></a>
+    <a href="logout.php" target="info-window"><button>logout</button></a>
+    <a href="doc/report.html" target="info-window"><button>about</button></a>
 </div>
 
 <form class="query" id="date-query" action="gisquery.php" method="get">
@@ -105,6 +105,8 @@ save modified image, then can be downloaded. (will not upload to server.)
 
 <div id="error-board">
 <h2>info</h2>
+<button id="hide-window">x</button>
+<iframe name="info-window"></iframe>
 </div>
 
 <form id="load-image" action="uploadimage.php" 
