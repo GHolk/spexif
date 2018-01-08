@@ -1,5 +1,5 @@
 
-const version = 'v5'
+const version = 'v6'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
@@ -21,7 +21,6 @@ self.addEventListener('install', (installEvent) => {
             'ext/manifest.json',
             'ext/mobile.css',
             'ext/piexif.js',
-            'ext/service-worker.js',
             'ext/style.css'
         ])
     }
