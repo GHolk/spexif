@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
 <script>
   if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('ext/service-worker.js', {scope: '../'})
+    navigator.serviceWorker.register('service-worker.js')
       .then((registEvent) => {
         if (registEvent.installing) console.log('service worker installing')
         else if (registEvent.waiting) console.log('service worker installed')
