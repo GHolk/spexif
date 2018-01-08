@@ -1,5 +1,5 @@
 
-const version = 'v1'
+const version = 'v2'
 
 self.addEventListener('install', async (installEvent) => {
     const cache = await caches.open(version)
@@ -42,3 +42,10 @@ self.addEventListener('fetch', async (fetchEvent) => {
     }
 })
 
+self.addEventListener('activate', async (activateEvent) => {
+    const keys = await caches.keys()
+    const deleteOld = keys
+          .filter((key) => key != version)
+          .map((key) => caches.delete(key))
+    activateEvent.waitUntil(Promise.all(deleteOld))
+})
