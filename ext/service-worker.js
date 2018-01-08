@@ -1,5 +1,5 @@
 
-const version = 'v6'
+const version = 'v7'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
@@ -24,6 +24,7 @@ self.addEventListener('install', (installEvent) => {
             'ext/style.css'
         ])
     }
+    console.log('start caching')
     installEvent.waitUntil(cacheAll())
     console.log('cache all file')
 })
