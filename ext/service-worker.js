@@ -1,10 +1,10 @@
 
-const version = 'v3'
+const version = 'v4'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
         const cache = await caches.open(version)
-        return cache.addAll([
+        return await cache.addAll([
             './',
             'index.html',
             'doc/report.html',
@@ -53,7 +53,7 @@ self.addEventListener('activate', (activateEvent) => {
         const deleteOld = keys
             .filter((key) => key != version)
             .map((key) => caches.delete(key))
-        return Promise.all(deleteOld)
+        return await Promise.all(deleteOld)
     }
     activateEvent.waitUntil(clearCache())
 })
