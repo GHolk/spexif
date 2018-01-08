@@ -1,12 +1,11 @@
 
-const version = 'v7'
+const version = 'v8'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
         const cache = await caches.open(version)
         return await cache.addAll([
             './',
-            'index.html',
             'doc/report.html',
             'ext/cacheImage.js',
             'ext/domHelper.js',
