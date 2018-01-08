@@ -1,5 +1,5 @@
 
-const version = 'v8'
+const version = 'v9'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
@@ -31,12 +31,9 @@ self.addEventListener('install', (installEvent) => {
 self.addEventListener('fetch', (fetchEvent) => {
     async function getResponse() {
         const cacheResponse = await caches.match(fetchEvent.request)
-        if (cacheResponse) {
-            console.log('match cache: %s', fetchEvent.request)
-            return cacheResponse
-        }
+        if (cacheResponse) return cacheResponse
         else {
-            console.log('no match cache: %s', fetchEvent.request)
+            console.log('no match cache: %s', fetchEvent.request.url)
             const newResponse = await fetch(fetchEvent.request)
             const cache = await caches.open(version)
             await cache.put(fetchEvent.request, newResponse.clone())
