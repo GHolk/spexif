@@ -9,9 +9,9 @@ class LeafletMap
             closePopupOnClick: false
         }
         osmLayer = new L.TileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             { attribution: """
-                Map data © <a href="http://openstreetmap.org">
+                Map data © <a href="//openstreetmap.org">
                 OpenStreetMap</a>
                 contributors'
             """ }
