@@ -1,5 +1,5 @@
 
-const version = 'v2'
+const version = 'v3'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
