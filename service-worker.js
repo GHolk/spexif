@@ -1,5 +1,5 @@
 
-const version = 'v9'
+const version = 'v10'
 
 self.addEventListener('install', (installEvent) => {
     async function cacheAll() {
@@ -35,8 +35,11 @@ self.addEventListener('fetch', (fetchEvent) => {
         else {
             console.log('no match cache: %s', fetchEvent.request.url)
             const newResponse = await fetch(fetchEvent.request)
-            const cache = await caches.open(version)
-            await cache.put(fetchEvent.request, newResponse.clone())
+            const sameOrigin = /^https?:..gholk.github.io.spexif.*$/
+            if (sameOrigin.test(fetchEvent.request.url)) {
+                const cache = await caches.open(version)
+                await cache.put(fetchEvent.request, newResponse.clone())
+            }
             return newResponse
         }
     }
