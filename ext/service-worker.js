@@ -4,6 +4,7 @@ const version = 'v1'
 self.addEventListener('install', async (installEvent) => {
     const cache = await caches.open(version)
     const cacheAll = cache.addAll([
+        './',
         'index.html',
         'doc/report.html',
         'ext/cacheImage.js',
