@@ -20,6 +20,7 @@ updateExif = (image, text) ->
 createInfoNode = (cacheImage) ->
     newNode = template.cloneNode true
     newNode.getElementsByTagName('img')[0].src = cacheImage.fullImage.url
+    newNode.getElementsByTagName('a')[0].href = cacheImage.fullImage.url
 
     exif = cacheImage.exif
     trim = (s) -> String(s).trim()

@@ -18,7 +18,7 @@
       map = L.map('leaflet-map-container', {
         closePopupOnClick: false
       });
-      osmLayer = new L.TileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      osmLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: "Map data © <a href=\"//openstreetmap.org\">\nOpenStreetMap</a>\ncontributors'"
       });
       map.setView(new L.LatLng(23.652186, 120.978075), 7);

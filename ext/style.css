@@ -129,17 +129,14 @@ form {
     word-break: break-all;
 }
 
-.image-info input:checked:after {
-    content: ' ';
-    display: block;
-    width: 1em;
-    height: 1em;
-    border-radius: 0.5em;
-    background-color: black;
-}
-
 .image-info input {
-    display: block;
+    display: inline;
+}
+.image-info a {
+    display: none;
+}
+.image-info:hover a {
+    display: inline;
 }
 
 #template {
