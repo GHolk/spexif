@@ -57,6 +57,12 @@
     return spexif.imageManager.remove();
   };
 
+  document.getElementById('download-select-image').onclick = function() {
+    return spexif.imageManager.getSelectedImages().forEach(function(image) {
+      return image.HTMLNode.getElementsByTagName('a')[0].click();
+    });
+  };
+
   dateEntries = {
     start: 'DateFrom',
     end: 'DateTo'

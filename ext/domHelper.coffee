@@ -44,6 +44,11 @@ document.getElementById 'invert-select-image'
 document.getElementById 'remove-select-image'
     .onclick = -> spexif.imageManager.remove()
 
+document.getElementById('download-select-image').onclick = ->
+    spexif.imageManager.getSelectedImages().forEach(
+        (image) -> image.HTMLNode.getElementsByTagName('a')[0].click()
+    )
+
 # dirty code..., I dont know how write pretty.
 # query need form name, but pass form name as argument ugly,
 # hard code even more ugly.
